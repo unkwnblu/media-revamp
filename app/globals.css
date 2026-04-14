@@ -16,9 +16,6 @@
   --font-body: var(--font-nunito);
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
 body {
   background: var(--background);
@@ -49,3 +46,60 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
 }
+
+/* Scroll-triggered animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger-children .fade-in-up:nth-child(1) { transition-delay: 0ms; }
+.stagger-children .fade-in-up:nth-child(2) { transition-delay: 100ms; }
+.stagger-children .fade-in-up:nth-child(3) { transition-delay: 200ms; }
+.stagger-children .fade-in-up:nth-child(4) { transition-delay: 300ms; }
+.stagger-children .fade-in-up:nth-child(5) { transition-delay: 400ms; }
+.stagger-children .fade-in-up:nth-child(6) { transition-delay: 500ms; }
+.stagger-children .fade-in-up:nth-child(7) { transition-delay: 600ms; }
+.stagger-children .fade-in-up:nth-child(8) { transition-delay: 700ms; }
+.stagger-children .fade-in-up:nth-child(9) { transition-delay: 800ms; }
+
+/* Hero word reveal */
+.word-reveal .word {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.word-reveal.in-view .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.word-reveal .word:nth-child(1) { transition-delay: 50ms; }
+.word-reveal .word:nth-child(2) { transition-delay: 100ms; }
+.word-reveal .word:nth-child(3) { transition-delay: 150ms; }
+.word-reveal .word:nth-child(4) { transition-delay: 200ms; }
+.word-reveal .word:nth-child(5) { transition-delay: 250ms; }
+.word-reveal .word:nth-child(6) { transition-delay: 300ms; }
+.word-reveal .word:nth-child(7) { transition-delay: 350ms; }
+.word-reveal .word:nth-child(8) { transition-delay: 400ms; }
+.word-reveal .word:nth-child(9) { transition-delay: 450ms; }
+.word-reveal .word:nth-child(10) { transition-delay: 500ms; }
+.word-reveal .word:nth-child(11) { transition-delay: 550ms; }
+.word-reveal .word:nth-child(12) { transition-delay: 600ms; }
+.word-reveal .word:nth-child(13) { transition-delay: 650ms; }
+.word-reveal .word:nth-child(14) { transition-delay: 700ms; }
+.word-reveal .word:nth-child(15) { transition-delay: 750ms; }
+.word-reveal .word:nth-child(16) { transition-delay: 800ms; }
+.word-reveal .word:nth-child(17) { transition-delay: 850ms; }
+.word-reveal .word:nth-child(18) { transition-delay: 900ms; }
+.word-reveal .word:nth-child(19) { transition-delay: 950ms; }
+.word-reveal .word:nth-child(20) { transition-delay: 1000ms; }
+.word-reveal .word:nth-child(n+21) { transition-delay: 1050ms; }

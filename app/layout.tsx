@@ -53,6 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${nunitoSans.variable} ${nunito.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-foreground font-body flex flex-col">

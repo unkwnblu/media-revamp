@@ -1,22 +1,11 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import { testimonials } from "@/lib/data";
 import TestimonialCard from "@/components/TestimonialCard";
-import { staggerFadeIn } from "@/lib/animations";
+import { useInView } from "@/lib/useInView";
 
 export default function TestimonialsSection() {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    const cards = cardsRef.current.filter(Boolean);
-    if (cards.length === 0) return;
-
-    const tween = staggerFadeIn(cards, 0.15);
-    return () => {
-      tween.kill();
-    };
-  }, []);
+  const { ref, inView } = useInView(0.1);
 
   return (
     <section className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10">
@@ -24,15 +13,17 @@ export default function TestimonialsSection() {
         <h2 className="font-heading font-black text-2xl md:text-4xl mb-12 md:mb-16">
           What Sets Us Apart
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <TestimonialCard
+        <div
+          ref={ref}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children`}
+        >
+          {testimonials.map((t) => (
+            <div
               key={t.author}
-              testimonial={t}
-              ref={(el) => {
-                if (el) cardsRef.current[i] = el;
-              }}
-            />
+              className={`fade-in-up ${inView ? "in-view" : ""}`}
+            >
+              <TestimonialCard testimonial={t} />
+            </div>
           ))}
         </div>
       </div>

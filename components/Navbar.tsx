@@ -11,26 +11,38 @@ export default function Navbar() {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLAnchorElement[]>([]);
+  const tweensRef = useRef<gsap.core.Tween[]>([]);
 
   useEffect(() => {
+    // Kill any previous menu tweens
+    tweensRef.current.forEach((t) => t.kill());
+    tweensRef.current = [];
+
     if (isOpen && menuRef.current) {
-      gsap.fromTo(
-        menuRef.current,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+      tweensRef.current.push(
+        gsap.fromTo(
+          menuRef.current,
+          { opacity: 0, y: -20 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+        )
       );
-      gsap.fromTo(
-        menuItemsRef.current,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.06,
-          ease: "power2.out",
-          delay: 0.15,
-        }
-      );
+      const items = menuItemsRef.current.filter(Boolean);
+      if (items.length > 0) {
+        tweensRef.current.push(
+          gsap.fromTo(
+            items,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              stagger: 0.06,
+              ease: "power2.out",
+              delay: 0.15,
+            }
+          )
+        );
+      }
     }
   }, [isOpen]);
 
@@ -38,6 +50,13 @@ export default function Navbar() {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      tweensRef.current.forEach((t) => t.kill());
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white-10">

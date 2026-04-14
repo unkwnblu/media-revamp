@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { fadeInUp } from "@/lib/animations";
+import { useInView } from "@/lib/useInView";
 
 interface CTABannerProps {
   heading: string;
@@ -15,23 +14,18 @@ export default function CTABanner({
   buttonText,
   buttonHref,
 }: CTABannerProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const tween = fadeInUp(sectionRef.current);
-    return () => {
-      tween.kill();
-    };
-  }, []);
+  const { ref, inView } = useInView(0.2);
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10"
     >
-      <div className="max-w-[1400px] mx-auto text-center">
+      <div
+        className={`max-w-[1400px] mx-auto text-center fade-in-up ${
+          inView ? "in-view" : ""
+        }`}
+      >
         <h2 className="font-heading font-black text-3xl md:text-5xl lg:text-6xl tracking-tight">
           {heading}
         </h2>

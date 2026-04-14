@@ -15,11 +15,6 @@ export function fadeInUp(element: Element, delay = 0) {
       duration: 1,
       delay,
       ease: "power3.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 85%",
-        toggleActions: "play none none none",
-      },
     }
   );
 }
@@ -34,11 +29,6 @@ export function staggerFadeIn(elements: Element[], stagger = 0.15) {
       duration: 0.8,
       stagger,
       ease: "power2.out",
-      scrollTrigger: {
-        trigger: elements[0],
-        start: "top 85%",
-        toggleActions: "play none none none",
-      },
     }
   );
 }
