@@ -1,26 +1,19 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
-import { fadeInUp } from "@/lib/animations";
+import { useInView } from "@/lib/useInView";
 
 export default function ATHContent() {
-  const infoRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!infoRef.current) return;
-    const tween = fadeInUp(infoRef.current);
-    return () => {
-      tween.kill();
-    };
-  }, []);
+  const { ref, inView } = useInView(0.2);
 
   return (
     <section className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10">
       <div
-        ref={infoRef}
-        className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12"
+        ref={ref}
+        className={`max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 fade-in-up ${
+          inView ? "in-view" : ""
+        }`}
       >
         <div>
           <h2 className="font-heading font-black text-2xl md:text-3xl mb-6">

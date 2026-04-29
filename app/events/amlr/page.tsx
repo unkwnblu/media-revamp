@@ -13,8 +13,11 @@ export default function AMLRPage() {
   return (
     <>
       {/* Hero */}
-      <section className="min-h-screen flex items-center justify-center relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-white-10 to-transparent opacity-30" />
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 gradient-1 opacity-20" />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="ambient-orb w-[500px] h-[500px] bg-purple-600 top-[-10%] right-[-10%]" style={{ animationDelay: "0s" }} />
+        <div className="ambient-orb w-[400px] h-[400px] bg-blue-500 bottom-[-5%] left-[10%]" style={{ animationDelay: "3s" }} />
         <div className="relative z-10 text-center px-6 md:px-10 max-w-4xl mx-auto">
           <span className="text-[10px] tracking-[0.5em] opacity-50 block mb-6">
             A1 Media Presents

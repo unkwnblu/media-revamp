@@ -1,31 +1,13 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { amlrPastEvents } from "@/lib/data";
-import { fadeInUp, staggerFadeIn } from "@/lib/animations";
+import { useInView } from "@/lib/useInView";
 
 export default function AMLRContent() {
-  const infoRef = useRef<HTMLDivElement>(null);
-  const pastEventsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    const tweens: gsap.core.Tween[] = [];
-
-    if (infoRef.current) {
-      tweens.push(fadeInUp(infoRef.current));
-    }
-
-    const pastCards = pastEventsRef.current.filter(Boolean);
-    if (pastCards.length > 0) {
-      tweens.push(staggerFadeIn(pastCards, 0.08));
-    }
-
-    return () => {
-      tweens.forEach((t) => t.kill());
-    };
-  }, []);
+  const { ref: infoRef, inView: infoInView } = useInView(0.1);
+  const { ref: pastRef, inView: pastInView } = useInView(0.1);
 
   return (
     <>
@@ -33,7 +15,9 @@ export default function AMLRContent() {
       <section className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10">
         <div
           ref={infoRef}
-          className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12"
+          className={`max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 fade-in-up ${
+            infoInView ? "in-view" : ""
+          }`}
         >
           <div>
             <h2 className="font-heading font-black text-2xl md:text-3xl mb-6">
@@ -102,23 +86,30 @@ export default function AMLRContent() {
           <h2 className="font-heading font-black text-2xl md:text-4xl mb-12 md:mb-16">
             Past Editions
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {amlrPastEvents.map((event, i) => (
-              <div
-                key={event.name}
-                ref={(el) => {
-                  if (el) pastEventsRef.current[i] = el;
-                }}
-                className="group aspect-[4/3] bg-white-10 relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white-20 to-transparent transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 flex items-end p-6">
-                  <h3 className="font-heading font-black text-sm md:text-base">
-                    {event.name}
-                  </h3>
+          <div
+            ref={pastRef}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children"
+          >
+            {amlrPastEvents.map((event, i) => {
+              const gradients = ["gradient-1", "gradient-7", "gradient-3", "gradient-5", "gradient-2", "gradient-6", "gradient-8", "gradient-4", "gradient-9"];
+              return (
+                <div
+                  key={event.name}
+                  className={`group aspect-[4/3] relative overflow-hidden fade-in-up ${
+                    pastInView ? "in-view" : ""
+                  }`}
+                >
+                  <div className={`absolute inset-0 ${gradients[i % gradients.length]} transition-transform duration-500 group-hover:scale-105`} />
+                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/50 transition-all duration-500" />
+                  <div className="absolute inset-0 card-shimmer overflow-hidden" />
+                  <div className="absolute inset-0 flex items-end p-6 z-10">
+                    <h3 className="font-heading font-black text-sm md:text-base">
+                      {event.name}
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

@@ -1,36 +1,43 @@
-"use client";
-
-import { forwardRef } from "react";
 import Link from "next/link";
 import type { EventData } from "@/lib/data";
+
+const eventGradients: Record<string, string> = {
+  amlr: "gradient-1",
+  "about-the-hype": "gradient-9",
+};
 
 interface EventCardProps {
   event: EventData;
 }
 
-const EventCard = forwardRef<HTMLAnchorElement, EventCardProps>(
-  function EventCard({ event }, ref) {
-    return (
-      <Link
-        ref={ref}
-        href={`/events/${event.slug}`}
-        className="group block relative aspect-[4/3] md:aspect-[16/9] overflow-hidden bg-white-10"
-      >
-        {/* Placeholder gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white-20 to-transparent transition-transform duration-700 group-hover:scale-105" />
+export default function EventCard({ event }: EventCardProps) {
+  const gradient = eventGradients[event.id] || "gradient-2";
 
-        {/* Content overlay */}
-        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-all duration-500 flex flex-col justify-end p-8 md:p-10">
-          <span className="text-[10px] tracking-widest opacity-60 mb-2">
-            {event.tagline}
-          </span>
-          <h3 className="font-heading font-black text-2xl md:text-3xl lg:text-4xl">
-            {event.title}
-          </h3>
-        </div>
-      </Link>
-    );
-  }
-);
+  return (
+    <Link
+      href={`/events/${event.slug}`}
+      className="group block relative aspect-[4/3] md:aspect-[16/9] overflow-hidden"
+    >
+      {/* Vibrant gradient background */}
+      <div
+        className={`absolute inset-0 ${gradient} transition-transform duration-700 group-hover:scale-105`}
+      />
 
-export default EventCard;
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/55 transition-all duration-500" />
+
+      {/* Shimmer */}
+      <div className="absolute inset-0 card-shimmer overflow-hidden" />
+
+      {/* Content overlay */}
+      <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10 z-10">
+        <span className="text-[10px] tracking-widest opacity-60 mb-2">
+          {event.tagline}
+        </span>
+        <h3 className="font-heading font-black text-2xl md:text-3xl lg:text-4xl group-hover:translate-x-2 transition-transform duration-500">
+          {event.title}
+        </h3>
+      </div>
+    </Link>
+  );
+}

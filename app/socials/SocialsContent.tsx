@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { FaInstagram, FaXTwitter, FaFacebook } from "react-icons/fa6";
 import { socialLinks } from "@/lib/data";
-import { staggerFadeIn, fadeInUp } from "@/lib/animations";
+import { useInView } from "@/lib/useInView";
 
 const socialIcons: Record<string, React.ReactNode> = {
   Instagram: <FaInstagram size={40} />,
@@ -13,42 +12,27 @@ const socialIcons: Record<string, React.ReactNode> = {
 };
 
 export default function SocialsContent() {
-  const cardsRef = useRef<HTMLAnchorElement[]>([]);
-  const contactRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const tweens: gsap.core.Tween[] = [];
-
-    const cards = cardsRef.current.filter(Boolean);
-    if (cards.length > 0) {
-      tweens.push(staggerFadeIn(cards, 0.1));
-    }
-
-    if (contactRef.current) {
-      tweens.push(fadeInUp(contactRef.current, 0.3));
-    }
-
-    return () => {
-      tweens.forEach((t) => t.kill());
-    };
-  }, []);
+  const { ref: cardsRef, inView: cardsInView } = useInView(0.1);
+  const { ref: contactRef, inView: contactInView } = useInView(0.2);
 
   return (
     <>
       {/* Social Links */}
       <section className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10">
         <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {socialLinks.map((link, i) => (
+          <div
+            ref={cardsRef}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children"
+          >
+            {socialLinks.map((link) => (
               <Link
                 key={link.platform}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                ref={(el) => {
-                  if (el) cardsRef.current[i] = el;
-                }}
-                className="group border border-white-10 p-10 md:p-12 flex flex-col items-center justify-center gap-6 hover:bg-white hover:text-black transition-all duration-500"
+                className={`group border border-white-10 p-10 md:p-12 flex flex-col items-center justify-center gap-6 hover:bg-white hover:text-black transition-all duration-500 fade-in-up ${
+                  cardsInView ? "in-view" : ""
+                }`}
               >
                 <span className="opacity-60 group-hover:opacity-100 transition-opacity">
                   {socialIcons[link.platform]}
@@ -69,7 +53,9 @@ export default function SocialsContent() {
       <section className="py-24 md:py-32 px-6 md:px-10 border-t border-white-10">
         <div
           ref={contactRef}
-          className="max-w-4xl mx-auto text-center space-y-6"
+          className={`max-w-4xl mx-auto text-center space-y-6 fade-in-up ${
+            contactInView ? "in-view" : ""
+          }`}
         >
           <h2 className="font-heading font-black text-2xl md:text-4xl mb-8">
             Get In Touch

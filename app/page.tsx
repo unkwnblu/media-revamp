@@ -1,30 +1,25 @@
-import HeroSection from "@/components/HeroSection";
-import CTABanner from "@/components/CTABanner";
-import TestimonialsSection from "./TestimonialsSection";
-import SocialsGrid from "./SocialsGrid";
+import HomeHero from "./HomeHero";
+import MarqueeTicker from "./MarqueeTicker";
+import AboutTeaser from "./AboutTeaser";
+import FeaturedWork from "./FeaturedWork";
+import ContentShowcase from "./ContentShowcase";
+import StatsBar from "./StatsBar";
+import TestimonialSpotlight from "./TestimonialSpotlight";
+import EventsPreview from "./EventsPreview";
+import HomeCTA from "./HomeCTA";
 
 export default function HomePage() {
   return (
     <>
-      <HeroSection
-        heading="We are an Entertainment company full of Art and Music Lovers. We are Dreamers of all kinds and Passionate about Creating the most Unique Experiences Ever."
-        videoSrc="/intro.mp4"
-        fullHeight
-        showScrollIndicator
-      />
-
-      {/* What Sets Us Apart */}
-      <TestimonialsSection />
-
-      {/* Spot Us On Socials */}
-      <SocialsGrid />
-
-      {/* CTA */}
-      <CTABanner
-        heading="Hit Us Up"
-        buttonText="DM A1"
-        buttonHref="https://www.instagram.com/thea1media"
-      />
+      <HomeHero />
+      <MarqueeTicker />
+      <AboutTeaser />
+      <FeaturedWork />
+      <ContentShowcase />
+      <StatsBar />
+      <TestimonialSpotlight />
+      <EventsPreview />
+      <HomeCTA />
     </>
   );
 }
