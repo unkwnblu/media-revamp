@@ -4,10 +4,10 @@ import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { RiUploadCloud2Line, RiCloseLine, RiImageLine, RiStarLine } from "react-icons/ri";
 
-interface UploadedImage {
+export interface UploadedImage {
   id: string;
-  url: string;       // object URL for preview (or existing path)
-  file?: File;
+  url: string;        // object URL (new) or existing DB path
+  file?: File;        // only present for newly picked files
   name: string;
   isPrimary?: boolean;
 }
@@ -16,9 +16,10 @@ interface ImageUploaderProps {
   label?: string;
   hint?: string;
   multiple?: boolean;
-  existingImages?: string[]; // existing paths from DB
-  primaryImage?: string;     // current thumbnail path
-  name?: string;             // hidden input name
+  existingImages?: string[];
+  primaryImage?: string;
+  name?: string;
+  onImagesChange?: (images: UploadedImage[]) => void; // called on every change
 }
 
 export default function ImageUploader({
@@ -28,6 +29,7 @@ export default function ImageUploader({
   existingImages = [],
   primaryImage,
   name = "images",
+  onImagesChange,
 }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -41,6 +43,15 @@ export default function ImageUploader({
     }))
   );
 
+  // Notify parent whenever images change
+  const update = useCallback(
+    (next: UploadedImage[]) => {
+      setImages(next);
+      onImagesChange?.(next);
+    },
+    [onImagesChange]
+  );
+
   const addFiles = useCallback(
     (files: FileList | null) => {
       if (!files || files.length === 0) return;
@@ -51,36 +62,38 @@ export default function ImageUploader({
           url: URL.createObjectURL(file),
           file,
           name: file.name,
-          isPrimary: images.length === 0, // first upload becomes primary
+          isPrimary: false,
         }));
 
       setImages((prev) => {
         const merged = multiple ? [...prev, ...newImages] : newImages;
-        // ensure exactly one primary
         const hasPrimary = merged.some((img) => img.isPrimary);
         if (!hasPrimary && merged.length > 0) merged[0].isPrimary = true;
+        onImagesChange?.(merged);
         return merged;
       });
     },
-    [images.length, multiple]
+    [multiple, onImagesChange]
   );
 
   const removeImage = (id: string) => {
     setImages((prev) => {
       const filtered = prev.filter((img) => img.id !== id);
-      // if we removed the primary, assign to first remaining
       const stillHasPrimary = filtered.some((img) => img.isPrimary);
       if (!stillHasPrimary && filtered.length > 0) {
         filtered[0] = { ...filtered[0], isPrimary: true };
       }
+      onImagesChange?.(filtered);
       return filtered;
     });
   };
 
   const setPrimary = (id: string) => {
-    setImages((prev) =>
-      prev.map((img) => ({ ...img, isPrimary: img.id === id }))
-    );
+    setImages((prev) => {
+      const next = prev.map((img) => ({ ...img, isPrimary: img.id === id }));
+      onImagesChange?.(next);
+      return next;
+    });
   };
 
   const onDragOver = (e: React.DragEvent) => {

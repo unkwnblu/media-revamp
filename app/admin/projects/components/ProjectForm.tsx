@@ -1,15 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { RiArrowLeftLine, RiSaveLine } from "react-icons/ri";
-import ImageUploader from "../../components/ImageUploader";
-import type { Project } from "@/lib/data";
+import { RiArrowLeftLine, RiSaveLine, RiLoader4Line } from "react-icons/ri";
+import ImageUploader, { type UploadedImage } from "../../components/ImageUploader";
+import { createProject, updateProject } from "../actions";
+
+interface DBProject {
+  id: string;
+  title: string;
+  category: string;
+  client: string;
+  year: number;
+  description: string;
+  thumbnail: string;
+  images: string[];
+}
 
 interface ProjectFormProps {
   backHref?: string;
   backLabel?: string;
   isEdit?: boolean;
-  project?: Project;
+  project?: DBProject;
 }
 
 const CATEGORIES = [
@@ -26,6 +38,50 @@ export default function ProjectForm({
   isEdit = false,
   project,
 }: ProjectFormProps) {
+  const [images, setImages] = useState<UploadedImage[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+
+      // Append actual File objects for upload
+      const newFiles = images.filter((img) => img.file);
+      newFiles.forEach((img) => formData.append("imageFiles", img.file!));
+
+      // Tell the server which index is the thumbnail
+      const primaryIndex = images.findIndex((img) => img.isPrimary);
+      formData.set("thumbnailIndex", String(Math.max(0, primaryIndex)));
+
+      // For edit: pass existing (already-uploaded) URLs separately
+      if (isEdit && project) {
+        const existingUrls = images.filter((img) => !img.file).map((img) => img.url);
+        existingUrls.forEach((url) => formData.append("existingImages", url));
+      }
+
+      if (isEdit && project) {
+        await updateProject(project.id, formData);
+      } else {
+        await createProject(formData);
+      }
+      // redirect happens inside the server action
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
+  };
+
+  // Seed ImageUploader with existing images when editing
+  const existingImages = project
+    ? [project.thumbnail, ...project.images.filter((img) => img !== project.thumbnail)].filter(Boolean)
+    : [];
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Back link */}
@@ -37,12 +93,10 @@ export default function ProjectForm({
         {backLabel}
       </Link>
 
-      <form className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+      <form onSubmit={handleSubmit} className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
         <div className="px-6 py-5 border-b border-white/[0.06]">
           <p className="text-sm text-white/50">
-            {isEdit
-              ? "Update the fields below and save."
-              : "Fill in the details below to create a new project."}
+            {isEdit ? "Update the fields below and save." : "Fill in the details below to create a new project."}
           </p>
         </div>
 
@@ -62,7 +116,7 @@ export default function ProjectForm({
             />
           </div>
 
-          {/* Category + Year row */}
+          {/* Category + Year */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-white/70 mb-1.5">
@@ -124,18 +178,25 @@ export default function ProjectForm({
             />
           </div>
 
-          {/* Divider */}
+          {/* Images */}
           <div className="border-t border-white/[0.06] pt-5">
-            {/* Image uploader — supports thumbnail + gallery */}
             <ImageUploader
               label="Project Images"
-              hint="The first image (or the one marked with ★) will be used as the thumbnail."
+              hint="The starred image becomes the thumbnail. Drag & drop or click to browse."
               multiple
-              existingImages={project ? [...(project.thumbnail ? [project.thumbnail] : []), ...project.images.filter((img) => img !== project.thumbnail)] : []}
+              existingImages={existingImages}
               primaryImage={project?.thumbnail}
-              name="images"
+              onImagesChange={setImages}
             />
           </div>
+
+          {/* Error */}
+          {error && (
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              <span className="shrink-0">⚠</span>
+              {error}
+            </div>
+          )}
         </div>
 
         <div className="px-6 py-4 border-t border-white/[0.06] flex items-center justify-end gap-3">
@@ -147,10 +208,20 @@ export default function ProjectForm({
           </Link>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-sm font-semibold hover:opacity-90 transition-opacity"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <RiSaveLine size={15} />
-            {isEdit ? "Save Changes" : "Create Project"}
+            {isSubmitting ? (
+              <>
+                <RiLoader4Line size={15} className="animate-spin" />
+                {isEdit ? "Saving…" : "Creating…"}
+              </>
+            ) : (
+              <>
+                <RiSaveLine size={15} />
+                {isEdit ? "Save Changes" : "Create Project"}
+              </>
+            )}
           </button>
         </div>
       </form>

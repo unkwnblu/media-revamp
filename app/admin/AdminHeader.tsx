@@ -1,7 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { RiMenuLine, RiBellLine, RiSearchLine } from "react-icons/ri";
+import { usePathname, useRouter } from "next/navigation";
+import { RiMenuLine, RiBellLine, RiSearchLine, RiLogoutBoxLine } from "react-icons/ri";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "./components/Toast";
 
 const pageTitles: Record<string, string> = {
   "/admin":              "Dashboard",
@@ -22,6 +24,15 @@ interface Props {
 
 export default function AdminHeader({ onMenuClick }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { showToast } = useToast();
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    showToast("You've been signed out successfully.", "info");
+    setTimeout(() => router.push("/admin/login"), 800);
+  };
 
   const title =
     pageTitles[pathname] ??
@@ -59,6 +70,15 @@ export default function AdminHeader({ onMenuClick }: Props) {
         <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs font-black">
           A1
         </div>
+
+        {/* Sign out */}
+        <button
+          onClick={handleSignOut}
+          title="Sign out"
+          className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06] text-white/40 hover:text-red-400 hover:bg-red-400/10 hover:border-red-400/20 transition-all"
+        >
+          <RiLogoutBoxLine size={17} />
+        </button>
       </div>
     </header>
   );

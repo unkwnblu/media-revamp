@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { projects, artists, events, testimonials, services } from "@/lib/data";
+import ToastTest from "./components/ToastTest";
 import {
   RiFolderVideoLine,
   RiUserStarLine,
@@ -59,9 +62,12 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Welcome */}
-      <div>
-        <h2 className="text-2xl font-bold">Welcome back 👋</h2>
-        <p className="text-white/40 text-sm mt-1">Here's an overview of your content.</p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="text-2xl font-bold">Welcome back 👋</h2>
+          <p className="text-white/40 text-sm mt-1">Here's an overview of your content.</p>
+        </div>
+        <ToastTest />
       </div>
 
       {/* Stats grid */}

@@ -17,6 +17,7 @@ interface AdminTableProps<T> {
   rows: T[];
   getEditHref?: (row: T) => string;
   getKey: (row: T) => string;
+  onDelete?: (key: string) => void;
   emptyMessage?: string;
 }
 
@@ -28,6 +29,7 @@ export default function AdminTable<T>({
   rows,
   getEditHref,
   getKey,
+  onDelete,
   emptyMessage = "No items yet.",
 }: AdminTableProps<T>) {
   return (
@@ -87,7 +89,7 @@ export default function AdminTable<T>({
                   <button
                     className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all"
                     title="Delete"
-                    onClick={() => {}}
+                    onClick={() => onDelete?.(getKey(row))}
                   >
                     <RiDeleteBinLine size={16} />
                   </button>

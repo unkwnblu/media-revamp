@@ -1,40 +1,21 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import ProjectsTable from "./components/ProjectsTable";
 
-import { projects } from "@/lib/data";
-import AdminTable from "../components/AdminTable";
+export default async function AdminProjectsPage() {
+  const supabase = await createClient();
 
-export default function AdminProjectsPage() {
-  return (
-    <AdminTable
-      title="Projects"
-      addHref="/admin/projects/new"
-      addLabel="New Project"
-      getKey={(p) => p.id}
-      getEditHref={(p) => `/admin/projects/${p.id}`}
-      columns={[
-        {
-          label: "Title",
-          render: (p) => <span className="font-medium text-white">{p.title}</span>,
-        },
-        {
-          label: "Category",
-          render: (p) => (
-            <span className="inline-block px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 text-xs">
-              {p.category}
-            </span>
-          ),
-        },
-        {
-          label: "Client",
-          render: (p) => <span className="text-white/50">{p.client}</span>,
-        },
-        {
-          label: "Year",
-          render: (p) => <span className="text-white/50">{p.year}</span>,
-          className: "text-right",
-        },
-      ]}
-      rows={projects}
-    />
-  );
+  const { data: projects, error } = await supabase
+    .from("projects")
+    .select("id, title, category, client, year, thumbnail")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm max-w-xl">
+        <span>⚠</span> Failed to load projects: {error.message}
+      </div>
+    );
+  }
+
+  return <ProjectsTable projects={projects ?? []} />;
 }
