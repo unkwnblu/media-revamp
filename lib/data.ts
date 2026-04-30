@@ -72,32 +72,32 @@ export const services: Service[] = [
   {
     title: "Artist Bookings",
     description:
-      "We can book any of your desired Nigerian artists for your various events anywhere across the world at the best rate with stress free engagement, management and co-ordination.",
+      "We can book any of your desired Nigerian artists for your various events anywhere across the world at the best rate — with stress-free engagement, management and co-ordination from start to finish.",
   },
   {
     title: "Asset & Content Creation",
     description:
-      "Our in-house photography, videography and editing team produce cutting-edge social media assets for your brand, optimised for each platform. Whether you need campaign photos, branded videos or repurposed influencer content — we've got you covered.",
+      "Our in-house photography, videography and editing team produce cutting-edge social media assets for your brand, optimised for every platform you work with. Whether you need campaign photos, an original branded video or repurposed influencer content — we've got you covered. Services include Photo Shoots, Brand Bible / Guidelines, Social Media Calendars, Electronic Press Kits, Look Books, Websites and more.",
   },
   {
     title: "Crisis Management",
     description:
-      "We are very prompt in Identifying, Measuring, Monitoring, Fixing, Repairing, Preventing, Response Management etc.",
+      "We are prompt and precise in identifying, measuring, monitoring, fixing, repairing and preventing reputational threats — providing full response management so your brand stays protected at every turn.",
   },
   {
-    title: "Public and Media Relations",
+    title: "Public & Media Relations",
     description:
-      "Our dedicated creative strategists and content team work together to build a game plan that will amplify your story and meaningfully grow your online presence. We leverage our relationships with key journalists and influencers to get your story told.",
+      "Our dedicated creative strategists and content team build a game plan that amplifies your story and meaningfully grows your online presence. We leverage deep relationships with key journalists and influencers to secure positive media coverage and get your story told.",
   },
   {
     title: "Social Media Ads & Campaigns",
     description:
-      "We develop and execute social media strategies that engage your target audience, build brand awareness, and drive business results.",
+      "We develop and execute social media strategies that engage your target audience, build brand awareness and drive measurable business results across every major platform.",
   },
   {
     title: "Reporting",
     description:
-      "Our reports measure how audiences are engaging with your social presence and provide you with a clear understanding of key performance metrics. We analyse trends in your audience growth, demographics, and interactions to continuously improve strategies and maximise your ROI.",
+      "Our reports measure how audiences engage with your social presence and give you a clear understanding of the KPIs that matter most. We analyse trends in audience growth, demographics and interactions to continuously improve strategies and maximise your ROI.",
   },
 ];
 

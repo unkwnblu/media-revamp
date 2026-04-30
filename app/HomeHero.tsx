@@ -92,8 +92,8 @@ export default function HomeHero() {
           }`}
         >
           <p className="max-w-md text-sm leading-relaxed opacity-70 font-body font-medium normal-case">
-            An entertainment company full of art and music lovers. Dreamers
-            of all kinds, passionate about creating the most memorable moments.
+            An entertainment company full of art and music lovers — dreamers
+            of all kinds, passionate about creating the most unique experiences ever.
           </p>
           <a
             href="#work"

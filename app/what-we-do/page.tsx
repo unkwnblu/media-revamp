@@ -7,7 +7,7 @@ import ServicesGrid from "./ServicesGrid";
 export const metadata: Metadata = createMetadata({
   title: "What We Do",
   description:
-    "From artist bookings to content creation — discover what A1 Media is good at.",
+    "From artist bookings and content creation to crisis management, media relations and social campaigns — discover the full range of what A1 Media delivers.",
 });
 
 export default function WhatWeDoPage() {

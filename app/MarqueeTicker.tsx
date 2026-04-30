@@ -1,13 +1,13 @@
 export default function MarqueeTicker() {
   const items = [
     "Artist Bookings",
-    "Content Creation",
-    "Event Production",
-    "Media Relations",
-    "Social Campaigns",
+    "Asset & Content Creation",
     "Crisis Management",
-    "Brand Strategy",
+    "Public & Media Relations",
+    "Social Media Ads & Campaigns",
+    "Reporting",
     "Live Events",
+    "Brand Activations",
   ];
 
   const repeated = [...items, ...items];

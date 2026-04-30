@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { navItems } from "@/lib/data";
 
@@ -28,10 +29,20 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-heading text-xl md:text-2xl font-black tracking-wider"
+            className="shrink-0 flex items-center gap-2.5"
             onClick={() => setIsOpen(false)}
           >
-            A1 Media
+            <Image
+              src="/logo.png"
+              alt="A1 Media"
+              width={400}
+              height={400}
+              className="h-9 w-auto invert mix-blend-screen"
+              priority
+            />
+            <span className="font-heading text-lg md:text-xl font-black tracking-wider">
+              A1 Media
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

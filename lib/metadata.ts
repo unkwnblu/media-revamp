@@ -3,14 +3,18 @@ import type { Metadata } from "next";
 const siteConfig = {
   name: "A1 Media",
   description:
-    "A1 Media is an Entertainment company full of Art and Music Lovers.",
+    "A1 Media is an entertainment company full of Art & Music Lovers — Dreamers of all kinds, passionate about creating the most Unique Experiences Ever.",
   url: "https://thea1media.com",
   ogImage: "/logo.png",
   keywords: [
-    "Music Lovers",
     "A1 Media",
-    "Top Entertainment",
-    "Social Gathering",
+    "Entertainment Company",
+    "Artist Bookings",
+    "Content Creation",
+    "Media Relations",
+    "Social Media Campaigns",
+    "Live Events",
+    "Nigeria",
   ],
 };
 

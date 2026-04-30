@@ -38,7 +38,7 @@ export default function AboutTeaser() {
             >
               Built on diversity.{" "}
               <span className="italic font-body font-medium bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Fueled by passion.
+                Fueled by self-expression.
               </span>{" "}
               Creating safe and magical spaces.
             </h2>
@@ -54,9 +54,9 @@ export default function AboutTeaser() {
               }`}
             >
               <p className="text-sm leading-relaxed opacity-70 font-body font-medium normal-case mb-8">
-                We respond to a calling to connect and form something bigger
-                than ourselves. We strive to create spaces fueled by relentless
-                positivity and the spirit of discovery.
+                We respond to a calling to connect and form something bigger than
+                ourselves — dreamers of all kinds, fueled by relentless positivity
+                and the spirit of discovery.
               </p>
               <Link
                 href="/who-we-are"
