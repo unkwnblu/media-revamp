@@ -1,26 +1,21 @@
-import { events } from "@/lib/data";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import AdminForm from "../../components/AdminForm";
+import EventForm from "../components/EventForm";
 
 export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const event = events.find((e) => e.id === id);
-  if (!event) notFound();
+  const supabase = await createClient();
 
-  return (
-    <AdminForm
-      backHref="/admin/events"
-      backLabel="Back to Events"
-      isEdit
-      fields={[
-        { label: "Title",       name: "title",       defaultValue: event.title,       required: true },
-        { label: "Tagline",     name: "tagline",     defaultValue: event.tagline,     required: true },
-        { label: "Slug",        name: "slug",        defaultValue: event.slug,
-          hint: "URL-friendly version of the title. No spaces, lowercase.", required: true },
-        { label: "Description", name: "description", type: "textarea", rows: 4, defaultValue: event.description },
-        { label: "Image URL",   name: "image",       type: "url",    defaultValue: event.image,
-          hint: "Path to the event cover image." },
-      ]}
-    />
-  );
+  const [{ data: event, error }, { data: sessions }] = await Promise.all([
+    supabase.from("events").select("*").eq("id", id).single(),
+    supabase
+      .from("event_sessions")
+      .select("name, date, venue, time, ticket_price, ticket_link, is_upcoming, sort_order, thumbnail, images")
+      .eq("event_id", id)
+      .order("sort_order", { ascending: true }),
+  ]);
+
+  if (error || !event) notFound();
+
+  return <EventForm isEdit event={event} sessions={sessions ?? []} />;
 }

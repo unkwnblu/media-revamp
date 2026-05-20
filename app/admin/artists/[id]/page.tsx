@@ -1,23 +1,18 @@
-import { artists } from "@/lib/data";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import AdminForm from "../../components/AdminForm";
+import ArtistForm from "../components/ArtistForm";
 
 export default async function EditArtistPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const artist = artists.find((a) => a.id === id);
-  if (!artist) notFound();
+  const supabase = await createClient();
 
-  return (
-    <AdminForm
-      backHref="/admin/artists"
-      backLabel="Back to Artists"
-      isEdit
-      fields={[
-        { label: "Name",      name: "name",  defaultValue: artist.name,  required: true },
-        { label: "Genre",     name: "genre", defaultValue: artist.genre, required: true },
-        { label: "Image URL", name: "image", type: "url", defaultValue: artist.image,
-          hint: "Path to the artist's profile image." },
-      ]}
-    />
-  );
+  const { data: artist, error } = await supabase
+    .from("artists")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !artist) notFound();
+
+  return <ArtistForm isEdit artist={artist} />;
 }

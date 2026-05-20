@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { projects } from "@/lib/data";
 import { useInView } from "@/lib/useInView";
 
 const cardGradients = [
@@ -10,9 +9,19 @@ const cardGradients = [
   "from-amber-500 via-orange-500 to-red-500",
 ];
 
-export default function FeaturedWork() {
+interface Project {
+  id: string;
+  title: string;
+  category: string | null;
+  year: string | null;
+  image: string | null;
+}
+
+export default function FeaturedWork({ projects }: { projects: Project[] }) {
   const { ref, inView } = useInView(0.1);
   const featured = projects.slice(0, 3);
+
+  if (featured.length === 0) return null;
 
   return (
     <section id="work" className="py-32 md:py-40 px-6 md:px-10 relative">

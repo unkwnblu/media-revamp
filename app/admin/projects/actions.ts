@@ -105,9 +105,48 @@ export async function updateProject(id: string, formData: FormData) {
 
 // ─── Delete ───────────────────────────────────────────────────────────────────
 
+/** Extract the storage object path from a Supabase public URL.
+ *  e.g. "https://xxx.supabase.co/storage/v1/object/public/projects/my-file.jpg"
+ *  → "my-file.jpg"
+ */
+function storagePathFromUrl(url: string, bucket: string): string | null {
+  try {
+    const marker = `/storage/v1/object/public/${bucket}/`;
+    const idx = url.indexOf(marker);
+    if (idx === -1) return null;
+    return decodeURIComponent(url.slice(idx + marker.length));
+  } catch {
+    return null;
+  }
+}
+
 export async function deleteProject(id: string) {
   const supabase = await createClient();
 
+  // 1. Fetch the project's image URLs before deleting
+  const { data: project, error: fetchError } = await supabase
+    .from("projects")
+    .select("images, thumbnail")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(fetchError.message);
+
+  // 2. Collect every unique storage path (images array + thumbnail)
+  const allUrls = Array.from(
+    new Set([...(project.images ?? []), project.thumbnail].filter(Boolean))
+  );
+
+  const storagePaths = allUrls
+    .map((url) => storagePathFromUrl(url, "projects"))
+    .filter((p): p is string => p !== null);
+
+  // 3. Delete files from Storage (best-effort — don't block on partial failure)
+  if (storagePaths.length > 0) {
+    await supabase.storage.from("projects").remove(storagePaths);
+  }
+
+  // 4. Delete the DB row
   const { error } = await supabase.from("projects").delete().eq("id", id);
   if (error) throw new Error(error.message);
 

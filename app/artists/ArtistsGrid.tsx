@@ -1,10 +1,16 @@
 "use client";
 
-import { artists } from "@/lib/data";
 import ArtistCard from "@/components/ArtistCard";
 import { useInView } from "@/lib/useInView";
 
-export default function ArtistsGrid() {
+interface Artist {
+  id: string;
+  name: string;
+  genre: string;
+  image: string;
+}
+
+export default function ArtistsGrid({ artists }: { artists: Artist[] }) {
   const { ref, inView } = useInView(0.1);
 
   return (
@@ -22,19 +28,23 @@ export default function ArtistsGrid() {
           <span className="text-[10px] tracking-[0.4em] opacity-40">The Artists</span>
         </div>
 
-        <div
-          ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 stagger-children"
-        >
-          {artists.map((artist, i) => (
-            <div
-              key={artist.id}
-              className={`fade-in-up ${inView ? "in-view" : ""}`}
-            >
-              <ArtistCard artist={artist} index={i} />
-            </div>
-          ))}
-        </div>
+        {artists.length === 0 ? (
+          <p className="text-white/30 text-sm">No artists yet. Check back soon.</p>
+        ) : (
+          <div
+            ref={ref}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 stagger-children"
+          >
+            {artists.map((artist, i) => (
+              <div
+                key={artist.id}
+                className={`fade-in-up ${inView ? "in-view" : ""}`}
+              >
+                <ArtistCard artist={artist} index={i} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

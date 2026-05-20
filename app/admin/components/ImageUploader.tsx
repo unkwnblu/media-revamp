@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { RiUploadCloud2Line, RiCloseLine, RiImageLine, RiStarLine } from "react-icons/ri";
 
@@ -43,14 +43,10 @@ export default function ImageUploader({
     }))
   );
 
-  // Notify parent whenever images change
-  const update = useCallback(
-    (next: UploadedImage[]) => {
-      setImages(next);
-      onImagesChange?.(next);
-    },
-    [onImagesChange]
-  );
+  // Notify parent after every images state change — never inside a state updater
+  useEffect(() => {
+    onImagesChange?.(images);
+  }, [images]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addFiles = useCallback(
     (files: FileList | null) => {
@@ -69,11 +65,10 @@ export default function ImageUploader({
         const merged = multiple ? [...prev, ...newImages] : newImages;
         const hasPrimary = merged.some((img) => img.isPrimary);
         if (!hasPrimary && merged.length > 0) merged[0].isPrimary = true;
-        onImagesChange?.(merged);
         return merged;
       });
     },
-    [multiple, onImagesChange]
+    [multiple]
   );
 
   const removeImage = (id: string) => {
@@ -83,17 +78,14 @@ export default function ImageUploader({
       if (!stillHasPrimary && filtered.length > 0) {
         filtered[0] = { ...filtered[0], isPrimary: true };
       }
-      onImagesChange?.(filtered);
       return filtered;
     });
   };
 
   const setPrimary = (id: string) => {
-    setImages((prev) => {
-      const next = prev.map((img) => ({ ...img, isPrimary: img.id === id }));
-      onImagesChange?.(next);
-      return next;
-    });
+    setImages((prev) =>
+      prev.map((img) => ({ ...img, isPrimary: img.id === id }))
+    );
   };
 
   const onDragOver = (e: React.DragEvent) => {

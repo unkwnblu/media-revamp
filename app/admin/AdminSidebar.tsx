@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   RiDashboardLine,
@@ -8,7 +9,6 @@ import {
   RiUserStarLine,
   RiCalendarEventLine,
   RiChatQuoteLine,
-  RiServiceLine,
   RiArrowLeftSLine,
   RiExternalLinkLine,
 } from "react-icons/ri";
@@ -19,7 +19,6 @@ const navItems = [
   { label: "Artists",      href: "/admin/artists",      icon: RiUserStarLine },
   { label: "Events",       href: "/admin/events",       icon: RiCalendarEventLine },
   { label: "Testimonials", href: "/admin/testimonials", icon: RiChatQuoteLine },
-  { label: "Services",     href: "/admin/services",     icon: RiServiceLine },
 ];
 
 interface Props {
@@ -45,9 +44,13 @@ export default function AdminSidebar({ isOpen, onClose }: Props) {
       {/* Logo */}
       <div className="flex items-center justify-between h-16 px-5 border-b border-white/[0.06] shrink-0">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-            <span className="text-[10px] font-black tracking-tight">A1</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="A1 Media"
+            width={32}
+            height={32}
+            className="invert mix-blend-screen"
+          />
           <div>
             <p className="text-sm font-bold leading-none tracking-wide">A1 Media</p>
             <p className="text-[10px] text-white/40 mt-0.5 tracking-wider">Admin Portal</p>

@@ -1,30 +1,21 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import TestimonialsTable from "./components/TestimonialsTable";
 
-import { testimonials } from "@/lib/data";
-import AdminTable from "../components/AdminTable";
+export default async function AdminTestimonialsPage() {
+  const supabase = await createClient();
 
-export default function AdminTestimonialsPage() {
-  return (
-    <AdminTable
-      title="Testimonials"
-      addHref="/admin/testimonials/new"
-      addLabel="New Testimonial"
-      getKey={(t) => t.author}
-      columns={[
-        {
-          label: "Author",
-          render: (t) => <span className="font-medium text-white">{t.author}</span>,
-        },
-        {
-          label: "Quote",
-          render: (t) => (
-            <span className="text-white/50 text-xs line-clamp-2 normal-case" style={{ textTransform: "none" }}>
-              &ldquo;{t.quote}&rdquo;
-            </span>
-          ),
-        },
-      ]}
-      rows={testimonials}
-    />
-  );
+  const { data: testimonials, error } = await supabase
+    .from("testimonials")
+    .select("id, quote, author, role")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm max-w-xl">
+        <span>⚠</span> Failed to load testimonials: {error.message}
+      </div>
+    );
+  }
+
+  return <TestimonialsTable testimonials={testimonials ?? []} />;
 }

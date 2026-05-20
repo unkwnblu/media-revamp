@@ -1,31 +1,21 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import EventsTable from "./components/EventsTable";
 
-import { events } from "@/lib/data";
-import AdminTable from "../components/AdminTable";
+export default async function AdminEventsPage() {
+  const supabase = await createClient();
 
-export default function AdminEventsPage() {
-  return (
-    <AdminTable
-      title="Events"
-      addHref="/admin/events/new"
-      addLabel="New Event"
-      getKey={(e) => e.id}
-      getEditHref={(e) => `/admin/events/${e.id}`}
-      columns={[
-        {
-          label: "Title",
-          render: (e) => <span className="font-medium text-white">{e.title}</span>,
-        },
-        {
-          label: "Tagline",
-          render: (e) => <span className="text-white/50">{e.tagline}</span>,
-        },
-        {
-          label: "Slug",
-          render: (e) => <span className="text-white/30 text-xs font-mono">{e.slug}</span>,
-        },
-      ]}
-      rows={events}
-    />
-  );
+  const { data: events, error } = await supabase
+    .from("events")
+    .select("id, title, tagline, slug, is_recurring")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm max-w-xl">
+        <span>⚠</span> Failed to load events: {error.message}
+      </div>
+    );
+  }
+
+  return <EventsTable events={events ?? []} />;
 }

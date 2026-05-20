@@ -1,4 +1,4 @@
-import type { Artist } from "@/lib/data";
+import Image from "next/image";
 
 const gradients = [
   "from-pink-500 via-rose-500 to-orange-400",
@@ -8,6 +8,13 @@ const gradients = [
   "from-blue-500 via-cyan-500 to-teal-400",
   "from-emerald-500 via-green-400 to-cyan-400",
 ];
+
+interface Artist {
+  id: string;
+  name: string;
+  genre: string;
+  image: string;
+}
 
 interface ArtistCardProps {
   artist: Artist;
@@ -19,14 +26,28 @@ export default function ArtistCard({ artist, index = 0 }: ArtistCardProps) {
 
   return (
     <div className="group relative aspect-[3/4] overflow-hidden rounded-xl cursor-pointer">
-      <div
-        className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-700 group-hover:scale-105`}
-      />
+      {/* Background: real image or gradient fallback */}
+      {artist.image ? (
+        <Image
+          src={artist.image}
+          alt={artist.name}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      ) : (
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-700 group-hover:scale-105`}
+        />
+      )}
+
       <div className="absolute inset-0 bg-black/15 group-hover:bg-black/25 transition-all duration-500" />
-      <div className="absolute inset-0 card-shimmer overflow-hidden" />
+      {artist.image && (
+        <div className="absolute inset-0 card-shimmer overflow-hidden" />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-      {/* Always-visible name + genre */}
+      {/* Name + genre */}
       <div className="absolute inset-0 flex flex-col justify-end p-6 z-10">
         <h3 className="font-heading font-black text-xl md:text-2xl group-hover:translate-x-1 transition-transform duration-500">
           {artist.name}

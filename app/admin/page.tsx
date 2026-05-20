@@ -1,55 +1,14 @@
-"use client";
-
 import Link from "next/link";
-import { projects, artists, events, testimonials, services } from "@/lib/data";
-import ToastTest from "./components/ToastTest";
+import { createClient } from "@/lib/supabase/server";
+import { events } from "@/lib/data";
 import {
   RiFolderVideoLine,
   RiUserStarLine,
   RiCalendarEventLine,
   RiChatQuoteLine,
-  RiServiceLine,
   RiArrowRightSLine,
   RiAddLine,
 } from "react-icons/ri";
-
-const stats = [
-  {
-    label: "Projects",
-    value: projects.length,
-    icon: RiFolderVideoLine,
-    href: "/admin/projects",
-    color: "from-purple-500 to-blue-500",
-  },
-  {
-    label: "Artists",
-    value: artists.length,
-    icon: RiUserStarLine,
-    href: "/admin/artists",
-    color: "from-pink-500 to-rose-500",
-  },
-  {
-    label: "Events",
-    value: events.length,
-    icon: RiCalendarEventLine,
-    href: "/admin/events",
-    color: "from-amber-500 to-orange-500",
-  },
-  {
-    label: "Testimonials",
-    value: testimonials.length,
-    icon: RiChatQuoteLine,
-    href: "/admin/testimonials",
-    color: "from-emerald-500 to-teal-500",
-  },
-  {
-    label: "Services",
-    value: services.length,
-    icon: RiServiceLine,
-    href: "/admin/services",
-    color: "from-violet-500 to-purple-500",
-  },
-];
 
 const quickActions = [
   { label: "Add Project",     href: "/admin/projects/new",     color: "from-purple-500 to-blue-500" },
@@ -58,16 +17,62 @@ const quickActions = [
   { label: "Add Testimonial", href: "/admin/testimonials/new", color: "from-emerald-500 to-teal-500" },
 ];
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const supabase = await createClient();
+
+  const [
+    { count: projectCount },
+    { count: artistCount },
+    { count: testimonialCount },
+    { data: recentProjects },
+    { data: recentArtists },
+  ] = await Promise.all([
+    supabase.from("projects").select("*", { count: "exact", head: true }),
+    supabase.from("artists").select("*", { count: "exact", head: true }),
+    supabase.from("testimonials").select("*", { count: "exact", head: true }),
+    supabase.from("projects").select("id, title, category, year").order("created_at", { ascending: false }).limit(4),
+    supabase.from("artists").select("id, name, genre").order("created_at", { ascending: false }).limit(3),
+  ]);
+
+  const stats = [
+    {
+      label: "Projects",
+      value: projectCount ?? 0,
+      icon: RiFolderVideoLine,
+      href: "/admin/projects",
+      color: "from-purple-500 to-blue-500",
+    },
+    {
+      label: "Artists",
+      value: artistCount ?? 0,
+      icon: RiUserStarLine,
+      href: "/admin/artists",
+      color: "from-pink-500 to-rose-500",
+    },
+    {
+      label: "Events",
+      value: events.length,
+      icon: RiCalendarEventLine,
+      href: "/admin/events",
+      color: "from-amber-500 to-orange-500",
+    },
+    {
+      label: "Testimonials",
+      value: testimonialCount ?? 0,
+      icon: RiChatQuoteLine,
+      href: "/admin/testimonials",
+      color: "from-emerald-500 to-teal-500",
+    },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Welcome */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h2 className="text-2xl font-bold">Welcome back 👋</h2>
-          <p className="text-white/40 text-sm mt-1">Here's an overview of your content.</p>
+          <p className="text-white/40 text-sm mt-1">Here&apos;s an overview of your content.</p>
         </div>
-        <ToastTest />
       </div>
 
       {/* Stats grid */}
@@ -89,7 +94,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Quick actions + Recent content */}
+      {/* Quick actions + Recent projects */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Quick actions */}
         <div className="lg:col-span-1">
@@ -120,28 +125,32 @@ export default function AdminDashboard() {
             </Link>
           </div>
           <div className="rounded-xl border border-white/[0.06] overflow-hidden">
-            {projects.slice(0, 4).map((project, i) => (
-              <div
-                key={project.id}
-                className={`flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.03] transition-colors ${
-                  i < 3 ? "border-b border-white/[0.04]" : ""
-                }`}
-              >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/30 to-pink-500/30 flex items-center justify-center shrink-0">
-                  <RiFolderVideoLine size={15} className="text-purple-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{project.title}</p>
-                  <p className="text-xs text-white/40">{project.category} · {project.year}</p>
-                </div>
-                <Link
-                  href={`/admin/projects/${project.id}`}
-                  className="text-xs text-white/30 hover:text-purple-400 transition-colors shrink-0"
+            {(recentProjects ?? []).length === 0 ? (
+              <p className="px-5 py-4 text-sm text-white/30">No projects yet.</p>
+            ) : (
+              (recentProjects ?? []).map((project, i) => (
+                <div
+                  key={project.id}
+                  className={`flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.03] transition-colors ${
+                    i < (recentProjects ?? []).length - 1 ? "border-b border-white/[0.04]" : ""
+                  }`}
                 >
-                  Edit
-                </Link>
-              </div>
-            ))}
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/30 to-pink-500/30 flex items-center justify-center shrink-0">
+                    <RiFolderVideoLine size={15} className="text-purple-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{project.title}</p>
+                    <p className="text-xs text-white/40">{project.category} · {project.year}</p>
+                  </div>
+                  <Link
+                    href={`/admin/projects/${project.id}`}
+                    className="text-xs text-white/30 hover:text-purple-400 transition-colors shrink-0"
+                  >
+                    Edit
+                  </Link>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -157,23 +166,27 @@ export default function AdminDashboard() {
             </Link>
           </div>
           <div className="rounded-xl border border-white/[0.06] overflow-hidden">
-            {artists.slice(0, 3).map((artist, i) => (
-              <div
-                key={artist.id}
-                className={`flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.03] transition-colors ${
-                  i < 2 ? "border-b border-white/[0.04]" : ""
-                }`}
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500/30 to-rose-500/30 flex items-center justify-center shrink-0">
-                  <RiUserStarLine size={15} className="text-pink-400" />
+            {(recentArtists ?? []).length === 0 ? (
+              <p className="px-5 py-4 text-sm text-white/30">No artists yet.</p>
+            ) : (
+              (recentArtists ?? []).map((artist, i) => (
+                <div
+                  key={artist.id}
+                  className={`flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.03] transition-colors ${
+                    i < (recentArtists ?? []).length - 1 ? "border-b border-white/[0.04]" : ""
+                  }`}
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500/30 to-rose-500/30 flex items-center justify-center shrink-0">
+                    <RiUserStarLine size={15} className="text-pink-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{artist.name}</p>
+                    <p className="text-xs text-white/40">{artist.genre}</p>
+                  </div>
+                  <Link href={`/admin/artists/${artist.id}`} className="text-xs text-white/30 hover:text-purple-400 transition-colors">Edit</Link>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{artist.name}</p>
-                  <p className="text-xs text-white/40">{artist.genre}</p>
-                </div>
-                <Link href={`/admin/artists/${artist.id}`} className="text-xs text-white/30 hover:text-purple-400 transition-colors">Edit</Link>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
