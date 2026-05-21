@@ -33,9 +33,11 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
       </h3>
 
       {/* Description */}
-      <p className="text-xs md:text-sm leading-relaxed font-body font-medium opacity-60 normal-case">
-        {service.description}
-      </p>
+      <div className="text-xs md:text-sm leading-relaxed font-body font-medium opacity-60 normal-case space-y-3">
+        {service.description.split("\n\n").map((para, i) => (
+          <p key={i}>{para}</p>
+        ))}
+      </div>
 
       {/* Hover glow */}
       <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${accent} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 pointer-events-none`} />

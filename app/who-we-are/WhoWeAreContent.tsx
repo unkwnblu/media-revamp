@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useInView } from "@/lib/useInView";
 
 const pillars = [
-  { label: "Diversity", color: "from-purple-500 to-blue-500" },
-  { label: "Inclusion", color: "from-pink-500 to-rose-500" },
-  { label: "Passion", color: "from-amber-500 to-orange-500" },
-  { label: "Discovery", color: "from-emerald-500 to-teal-500" },
+  { label: "Diversity",  color: "from-purple-600/80 to-blue-600/80",   image: "/images/IMG_1129.jpg" },
+  { label: "Inclusion",  color: "from-pink-600/80 to-rose-600/80",     image: "/images/IMG_1172.jpg" },
+  { label: "Passion",    color: "from-amber-600/80 to-orange-600/80",  image: "/images/IMG_1077.jpg" },
+  { label: "Discovery",  color: "from-emerald-600/80 to-teal-600/80",  image: "/images/IMG_1121.jpg" },
 ];
 
 export default function WhoWeAreContent() {
@@ -46,10 +47,21 @@ export default function WhoWeAreContent() {
               className="relative aspect-[3/2] rounded-xl overflow-hidden group"
               style={{ transitionDelay: `${400 + i * 80}ms` }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${pillar.color} opacity-80 group-hover:opacity-100 transition-opacity duration-500`} />
-              <div className="absolute inset-0 bg-black/10" />
+              {/* Photo */}
+              <Image
+                src={pillar.image}
+                alt={pillar.label}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+              {/* Coloured gradient overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${pillar.color} transition-opacity duration-500 group-hover:opacity-70`} />
+              {/* Dark vignette so text stays readable */}
+              <div className="absolute inset-0 bg-black/30" />
+              {/* Label */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-heading font-black text-lg md:text-xl tracking-widest">
+                <span className="font-heading font-black text-lg md:text-xl tracking-widest drop-shadow-lg">
                   {pillar.label}
                 </span>
               </div>

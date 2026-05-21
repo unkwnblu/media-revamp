@@ -39,7 +39,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
         ) : (
           <div
             ref={ref}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 stagger-children"
+            className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 stagger-children"
           >
             {projects.map((project, i) => (
               <div

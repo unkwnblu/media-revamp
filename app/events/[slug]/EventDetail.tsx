@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useInView } from "@/lib/useInView";
 import {
   RiMapPinLine, RiTimeLine, RiCalendarLine, RiTicketLine,
-  RiArrowRightLine, RiImageLine,
+  RiArrowRightLine, RiImageLine, RiInstagramLine, RiTwitterXLine,
+  RiTiktokLine, RiFacebookBoxLine,
 } from "react-icons/ri";
 
 interface Session {
@@ -28,6 +29,11 @@ interface Event {
   venue: string | null;
   time: string | null;
   ticket_price: string | null;
+  ticket_link: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  tiktok: string | null;
+  facebook: string | null;
 }
 
 function InfoPill({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
@@ -35,6 +41,39 @@ function InfoPill({ icon: Icon, label }: { icon: React.ElementType; label: strin
     <div className="flex items-center gap-2 text-sm text-white/70">
       <Icon size={14} className="text-purple-400 shrink-0" />
       <span>{label}</span>
+    </div>
+  );
+}
+
+// ── Social links row ─────────────────────────────────────────────────────────
+const socialConfig = [
+  { key: "instagram", icon: RiInstagramLine, label: "Instagram", color: "hover:text-pink-400 hover:border-pink-400/40" },
+  { key: "twitter",   icon: RiTwitterXLine,  label: "X",         color: "hover:text-white hover:border-white/40" },
+  { key: "tiktok",    icon: RiTiktokLine,    label: "TikTok",    color: "hover:text-white hover:border-white/40" },
+  { key: "facebook",  icon: RiFacebookBoxLine, label: "Facebook", color: "hover:text-blue-400 hover:border-blue-400/40" },
+];
+
+function SocialLinks({ event }: { event: Event }) {
+  const links = socialConfig.filter(({ key }) => !!event[key as keyof Event]);
+  if (links.length === 0) return null;
+
+  return (
+    <div className="mt-8 pt-6 border-t border-white/[0.06]">
+      <p className="text-[10px] tracking-[0.3em] text-white/30 mb-4">FOLLOW THE EVENT</p>
+      <div className="flex items-center gap-3 flex-wrap">
+        {links.map(({ key, icon: Icon, label, color }) => (
+          <a
+            key={key}
+            href={event[key as keyof Event] as string}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/[0.12] text-white/50 text-xs tracking-wide transition-all duration-200 ${color}`}
+          >
+            <Icon size={14} />
+            {label}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
@@ -126,9 +165,12 @@ export default function EventDetail({
           }`}
         >
           {event.is_recurring ? (
-            <p className="text-base md:text-lg leading-relaxed text-white/70 max-w-2xl">
-              {event.description}
-            </p>
+            <>
+              <p className="text-base md:text-lg leading-relaxed text-white/70 max-w-2xl">
+                {event.description}
+              </p>
+              <SocialLinks event={event} />
+            </>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
@@ -141,6 +183,7 @@ export default function EventDetail({
                   {event.time && <InfoPill icon={RiTimeLine} label={event.time} />}
                   {event.ticket_price && <InfoPill icon={RiTicketLine} label={event.ticket_price} />}
                 </div>
+                <SocialLinks event={event} />
               </div>
               <div>
                 <h2 className="font-heading font-black text-2xl md:text-3xl mb-6">About</h2>

@@ -33,7 +33,7 @@ export default function Footer() {
       <div className="border-t border-white-10 py-6 px-6 md:px-10">
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-widest opacity-50">
           <span>Privacy Policy</span>
-          <span>&copy; 2026 A1 Media Group</span>
+          <span>&copy; 2020 A1 Media Group</span>
           <span>All Rights Reserved</span>
         </div>
       </div>

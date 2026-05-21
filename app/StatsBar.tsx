@@ -3,10 +3,10 @@
 import { useInView } from "@/lib/useInView";
 
 const stats = [
-  { number: "50+", label: "Artists Managed" },
-  { number: "120+", label: "Events Produced" },
-  { number: "30+", label: "Brand Partners" },
-  { number: "5M+", label: "People Reached" },
+  { number: "20+",  label: "Artists Managed" },
+  { number: "100+", label: "Brand Campaigns" },
+  { number: "100+", label: "Events Managed" },
+  { number: "100M+", label: "People Reached" },
 ];
 
 export default function StatsBar() {

@@ -13,7 +13,7 @@ export const metadata: Metadata = createMetadata({
 export default function WhatWeDoPage() {
   return (
     <>
-      <HeroSection heading="What We Are Good At" fullHeight={false} />
+      <HeroSection heading="What We Are the best At" fullHeight={false} />
       <ServicesGrid />
       <CTABanner
         heading="Let's Handle Your Next Project"

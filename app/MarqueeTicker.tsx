@@ -5,8 +5,7 @@ export default function MarqueeTicker() {
     "Crisis Management",
     "Public & Media Relations",
     "Social Media Ads & Campaigns",
-    "Reporting",
-    "Live Events",
+    "Events Curation and Management",
     "Brand Activations",
   ];
 

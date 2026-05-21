@@ -99,6 +99,11 @@ export const services: Service[] = [
     description:
       "Our reports measure how audiences engage with your social presence and give you a clear understanding of the KPIs that matter most. We analyse trends in audience growth, demographics and interactions to continuously improve strategies and maximise your ROI.",
   },
+  {
+    title: "Events Curation & Management",
+    description:
+      "We offer end-to-end Event Management services designed to create impactful experiences that elevate brands, communities, and cultural moments. From concerts and nightlife experiences to brand activations and corporate events, we manage both the creative direction and execution process seamlessly.\n\nOur approach combines PR strategy with event production ensuring every event not only runs smoothly, but also generates visibility, audience engagement, media attention, and strong social conversation before, during, and after the experience.",
+  },
 ];
 
 export const projects: Project[] = [

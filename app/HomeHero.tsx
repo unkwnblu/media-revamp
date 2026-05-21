@@ -91,12 +91,11 @@ export default function HomeHero() {
               : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="max-w-md text-sm leading-relaxed opacity-70 font-body font-medium normal-case">
-            An entertainment company full of art and music lovers — dreamers
-            of all kinds, passionate about creating the most unique experiences ever.
+          <p className="max-w-md text-sm leading-relaxed opacity-70 font-body font-bold normal-case">
+            We are an Entertainment company full of Art & Music Lovers. We are Dreamers of all kinds and Passionate about Creating the most Unique Experiences Ever. 
           </p>
           <a
-            href="#work"
+            href="/portfolio"
             className="shrink-0 group flex items-center gap-3 text-xs tracking-widest"
           >
             <span className="opacity-70 group-hover:opacity-100 transition-opacity">

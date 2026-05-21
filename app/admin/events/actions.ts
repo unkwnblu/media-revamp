@@ -98,6 +98,10 @@ export async function createEvent(formData: FormData) {
       time:         isRecurring ? null : (formData.get("time") as string) || null,
       ticket_price: isRecurring ? null : (formData.get("ticket_price") as string) || null,
       ticket_link:  (formData.get("ticket_link") as string) || null,
+      instagram:    (formData.get("instagram") as string) || null,
+      twitter:      (formData.get("twitter") as string) || null,
+      tiktok:       (formData.get("tiktok") as string) || null,
+      facebook:     (formData.get("facebook") as string) || null,
     })
     .select("id")
     .single();
@@ -155,6 +159,10 @@ export async function updateEvent(id: string, formData: FormData) {
       time:         isRecurring ? null : (formData.get("time") as string) || null,
       ticket_price: isRecurring ? null : (formData.get("ticket_price") as string) || null,
       ticket_link:  (formData.get("ticket_link") as string) || null,
+      instagram:    (formData.get("instagram") as string) || null,
+      twitter:      (formData.get("twitter") as string) || null,
+      tiktok:       (formData.get("tiktok") as string) || null,
+      facebook:     (formData.get("facebook") as string) || null,
       updated_at:   new Date().toISOString(),
     })
     .eq("id", id);

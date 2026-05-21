@@ -53,14 +53,14 @@ export default function ProjectCard({ project, index = 0 }: ProjectCardProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
       {/* Text */}
-      <div className="absolute inset-0 flex flex-col justify-end p-6 z-10">
-        <span className="text-[10px] tracking-widest opacity-60 mb-1 text-purple-200">
+      <div className="absolute inset-0 flex flex-col justify-end p-3 md:p-6 z-10">
+        <span className="text-[9px] md:text-[10px] tracking-widest opacity-60 mb-1 text-purple-200">
           {project.category}
         </span>
-        <h3 className="font-heading font-black text-lg group-hover:translate-x-1 transition-transform duration-500">
+        <h3 className="font-heading font-black text-xs sm:text-sm md:text-lg leading-tight group-hover:translate-x-1 transition-transform duration-500">
           {project.title}
         </h3>
-        <span className="text-[10px] tracking-widest opacity-40 mt-1">
+        <span className="text-[9px] md:text-[10px] tracking-widest opacity-40 mt-1">
           {project.year}
         </span>
       </div>

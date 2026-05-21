@@ -6,7 +6,8 @@ import Image from "next/image";
 import {
   RiArrowLeftLine, RiSaveLine, RiLoader4Line, RiUploadCloud2Line,
   RiCloseLine, RiImageLine, RiAddLine, RiDeleteBinLine, RiCalendarLine,
-  RiRepeatLine, RiGalleryLine, RiLinkM,
+  RiRepeatLine, RiGalleryLine, RiLinkM, RiInstagramLine, RiTwitterXLine,
+  RiTiktokLine, RiFacebookBoxLine,
 } from "react-icons/ri";
 import { createEvent, updateEvent } from "../actions";
 
@@ -25,6 +26,10 @@ interface DBEvent {
   time: string | null;
   ticket_price: string | null;
   ticket_link: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  tiktok: string | null;
+  facebook: string | null;
 }
 
 interface DBSession {
@@ -606,6 +611,34 @@ export default function EventForm({ isEdit = false, event, sessions: initialSess
               </div>
             </div>
           )}
+
+          {/* Social Media Links */}
+          <div className="border-t border-white/[0.06] pt-5 space-y-3">
+            <div>
+              <p className="text-sm font-medium text-white/70">Social Media Links</p>
+              <p className="text-xs text-white/30 mt-0.5">Optional links shown on the event page.</p>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              {[
+                { name: "instagram", icon: RiInstagramLine, placeholder: "https://instagram.com/...", label: "Instagram", color: "text-pink-400" },
+                { name: "twitter",   icon: RiTwitterXLine,  placeholder: "https://x.com/...",         label: "X / Twitter", color: "text-white/60" },
+                { name: "tiktok",    icon: RiTiktokLine,    placeholder: "https://tiktok.com/@...",   label: "TikTok",     color: "text-white/60" },
+                { name: "facebook",  icon: RiFacebookBoxLine, placeholder: "https://facebook.com/...", label: "Facebook",  color: "text-blue-400" },
+              ].map(({ name, icon: Icon, placeholder, label, color }) => (
+                <div key={name} className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2.5 focus-within:border-purple-400/50 transition-all">
+                  <Icon size={16} className={`shrink-0 ${color}`} />
+                  <input
+                    type="url"
+                    name={name}
+                    defaultValue={(event as Record<string, string | null> | undefined)?.[name] ?? ""}
+                    placeholder={placeholder}
+                    aria-label={label}
+                    className="flex-1 bg-transparent text-sm text-white placeholder-white/25 outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Error */}
           {error && (

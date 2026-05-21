@@ -1,15 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useInView } from "@/lib/useInView";
+
+const mosaicImages = [
+  "/images/IMG_1088.jpg",
+  "/images/IMG_1027.jpg",
+  "/images/IMG_0968.jpg",
+  "/images/IMG_1153.jpg",
+  "/images/IMG_1036.jpg",
+  "/images/IMG_0961.jpg",
+];
 
 export default function AboutTeaser() {
   const { ref, inView } = useInView(0.15);
 
   return (
     <section className="py-32 md:py-40 px-6 md:px-10 relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/70 via-violet-950/50 to-pink-900/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 pointer-events-none" />
+
+      {/* Ambient orbs — much more vivid */}
+      <div className="ambient-orb w-[800px] h-[800px] bg-purple-500 top-[-30%] left-[-20%] !opacity-25" style={{ animationDelay: "1s" }} />
+      <div className="ambient-orb w-[600px] h-[600px] bg-pink-500 bottom-[-20%] right-[-15%] !opacity-20" style={{ animationDelay: "4s" }} />
+      <div className="ambient-orb w-[450px] h-[450px] bg-violet-400 top-[20%] right-[15%] !opacity-15" style={{ animationDelay: "7s" }} />
+      <div className="ambient-orb w-[300px] h-[300px] bg-rose-500 bottom-[10%] left-[20%] !opacity-12" style={{ animationDelay: "2s" }} />
 
       <div ref={ref} className="max-w-[1400px] mx-auto relative">
         {/* Section label */}
@@ -79,18 +96,19 @@ export default function AboutTeaser() {
         >
           {/* Mobile: 2-col simple grid */}
           <div className="grid grid-cols-2 gap-3 md:hidden">
-            {[
-              { gradient: "from-purple-600 to-blue-600", aspect: "aspect-[4/3]" },
-              { gradient: "from-pink-500 to-rose-600", aspect: "aspect-[4/3]" },
-              { gradient: "from-amber-500 to-orange-600", aspect: "aspect-[4/3]" },
-              { gradient: "from-emerald-500 to-teal-500", aspect: "aspect-[4/3]" },
-            ].map((item, i) => (
+            {mosaicImages.slice(0, 4).map((src, i) => (
               <div
                 key={i}
-                className={`${item.aspect} rounded-xl overflow-hidden relative group`}
+                className="aspect-[4/3] rounded-xl overflow-hidden relative group"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient}`} />
-                <div className="absolute inset-0 bg-black/10" />
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="50vw"
+                />
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
               </div>
             ))}
           </div>
@@ -98,20 +116,26 @@ export default function AboutTeaser() {
           {/* Desktop: 6-col asymmetric grid */}
           <div className="hidden md:grid grid-cols-6 gap-3">
             {[
-              { gradient: "from-purple-600 to-blue-600", aspect: "aspect-[3/4]" },
-              { gradient: "from-pink-500 to-rose-600", aspect: "aspect-square" },
-              { gradient: "from-amber-500 to-orange-600", aspect: "aspect-[3/4]" },
-              { gradient: "from-blue-500 to-cyan-500", aspect: "aspect-square" },
-              { gradient: "from-emerald-500 to-teal-500", aspect: "aspect-[3/4]" },
-              { gradient: "from-violet-500 to-purple-600", aspect: "aspect-square" },
+              { src: mosaicImages[0], aspect: "aspect-[3/4]" },
+              { src: mosaicImages[1], aspect: "aspect-square" },
+              { src: mosaicImages[2], aspect: "aspect-[3/4]" },
+              { src: mosaicImages[3], aspect: "aspect-square" },
+              { src: mosaicImages[4], aspect: "aspect-[3/4]" },
+              { src: mosaicImages[5], aspect: "aspect-square" },
             ].map((item, i) => (
               <div
                 key={i}
                 className={`${item.aspect} rounded-lg overflow-hidden relative group`}
                 style={{ transitionDelay: `${600 + i * 100}ms` }}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} transition-transform duration-700 group-hover:scale-110`} />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                <Image
+                  src={item.src}
+                  alt=""
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="17vw"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500" />
               </div>
             ))}
           </div>
