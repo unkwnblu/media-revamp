@@ -18,12 +18,11 @@ interface Props {
 }
 
 const otherItems = [
-  { span: "col-span-1 row-span-1", label: "Backstage",          videoUrl: "https://www.youtube.com/embed/nqUUCJQ9bYc?si=Vgujr01GbPskqvsE" },
-  { span: "col-span-1 row-span-1", label: "Studio",             videoUrl: "https://www.youtube.com/embed/dulzKNE0Yww?si=vspaB9HkDhvobKCi" },
-  { span: "col-span-1 row-span-2", label: "Campaigns",          videoUrl: "https://www.youtube.com/embed/org5IEvs184?si=Cu9iufLFfIXunyzo" },
-  { span: "col-span-1 row-span-1", label: "Music Videos",       videoUrl: "https://www.youtube.com/embed/iHEvDV5QAC4?si=gjIzn6vmqnP8I4u3" },
-  { span: "col-span-1 row-span-1", label: "Brand Activations",  videoUrl: "https://www.youtube.com/embed/MXNbA6KGdeA?si=txkdLolA9tKdUdOi" },
-  { span: "col-span-1 row-span-1", label: "Video 6",            videoUrl: "https://www.youtube.com/embed/N-59Bl_I__8?si=AngOUkQ58cYUqlxC" },
+  { image: "/images/IMG_0963.jpg", span: "col-span-1 row-span-1", label: "Backstage",         href: "/gallery/backstage" },
+  { image: "/images/IMG_1077.jpg", span: "col-span-1 row-span-1", label: "Studio",            href: "/gallery/studio" },
+  { image: "/images/IMG_1172.jpg", span: "col-span-1 row-span-2", label: "Campaigns",         href: "/gallery/campaigns" },
+  { image: "/images/IMG_1011.jpg", span: "col-span-1 row-span-1", label: "Music Videos",      href: "/gallery/music-videos" },
+  { image: "/images/IMG_0970.jpg", span: "col-span-2 row-span-1", label: "Brand Activations", href: "/gallery/brand-activations" },
 ];
 
 export default function ContentShowcase({ upcomingSessions }: Props) {
@@ -114,24 +113,42 @@ export default function ContentShowcase({ upcomingSessions }: Props) {
             </div>
           </Link>
 
-          {/* ── Video items ── */}
+          {/* ── Other items ── */}
           {otherItems.map((item, i) => (
-            <div
+            <Link
               key={i}
-              className={`${item.span} relative overflow-hidden rounded-xl transition-all duration-700 ${
+              href={item.href}
+              className={`${item.span} group relative overflow-hidden rounded-xl transition-all duration-700 ${
                 inView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               }`}
               style={{ transitionDelay: `${300 + i * 100}ms` }}
             >
-              <iframe
-                src={item.videoUrl}
-                title={item.label}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full border-0"
+              {/* Background photo */}
+              <Image
+                src={item.image}
+                alt={item.label}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 50vw, 25vw"
               />
-            </div>
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              {/* Hover play icon */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              {/* Label */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                <span className="text-[10px] md:text-xs tracking-widest font-heading font-bold opacity-90 group-hover:opacity-100 transition-opacity">
+                  {item.label}
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

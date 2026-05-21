@@ -21,7 +21,7 @@ export default function NotFound() {
 
       {/* Giant 404 watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-[0.03]">
-        <span className="font-heading font-black text-[40vw] leading-none tracking-tighter">
+        <span className="font-heading font-black leading-none tracking-tighter" style={{ fontSize: "40vw" }}>
           404
         </span>
       </div>

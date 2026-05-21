@@ -11,6 +11,7 @@ import {
   RiChatQuoteLine,
   RiArrowLeftSLine,
   RiExternalLinkLine,
+  RiVideoLine,
 } from "react-icons/ri";
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
   { label: "Projects",     href: "/admin/projects",     icon: RiFolderVideoLine },
   { label: "Artists",      href: "/admin/artists",      icon: RiUserStarLine },
   { label: "Events",       href: "/admin/events",       icon: RiCalendarEventLine },
+  { label: "Gallery",      href: "/admin/gallery",      icon: RiVideoLine },
   { label: "Testimonials", href: "/admin/testimonials", icon: RiChatQuoteLine },
 ];
 

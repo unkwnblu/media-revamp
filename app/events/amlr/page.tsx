@@ -18,10 +18,11 @@ export default function AMLRPage() {
         <div className="absolute inset-0 bg-black/60" />
         <div className="ambient-orb w-[500px] h-[500px] bg-purple-600 top-[-10%] right-[-10%]" style={{ animationDelay: "0s" }} />
         <div className="ambient-orb w-[400px] h-[400px] bg-blue-500 bottom-[-5%] left-[10%]" style={{ animationDelay: "3s" }} />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="font-heading font-black leading-none tracking-tighter opacity-[0.04]" style={{ fontSize: "40vw" }}>A1</span>
+        </div>
+
         <div className="relative z-10 text-center px-6 md:px-10 max-w-4xl mx-auto">
-          <span className="text-[10px] tracking-[0.5em] opacity-50 block mb-6">
-            A1 Media Presents
-          </span>
           <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-tight">
             Amapiano Left and Right
           </h1>

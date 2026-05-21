@@ -37,7 +37,7 @@ export default function HomeHero() {
           inView ? "opacity-[0.04]" : "opacity-0"
         }`}
       >
-        <span className="font-heading font-black text-[40vw] leading-none tracking-tighter">
+        <span className="font-heading font-black leading-none tracking-tighter" style={{ fontSize: "40vw" }}>
           A1
         </span>
       </div>
@@ -91,8 +91,8 @@ export default function HomeHero() {
               : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="max-w-md text-sm leading-relaxed opacity-70 font-body font-bold normal-case">
-            We are an Entertainment company full of Art & Music Lovers. We are Dreamers of all kinds and Passionate about Creating the most Unique Experiences Ever. 
+          <p className="max-w-md text-lg leading-relaxed opacity-70 font-body font-bold normal-case">
+            We are an entertainment company full of art & music lovers. We are dreamers of all kinds and passionate about creating the most unique experiences ever.
           </p>
           <a
             href="/portfolio"

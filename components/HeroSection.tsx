@@ -73,14 +73,14 @@ export default function HeroSection({
         </div>
       </div>
 
-      {/* Large watermark letter */}
+      {/* A1 watermark */}
       <div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none transition-all duration-[1.2s] ${
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none transition-all duration-[1.2s] ${
           inView ? "opacity-[0.04] scale-100" : "opacity-0 scale-90"
         }`}
       >
-        <span className="font-heading font-black text-[30vw] leading-none">
-          {words[0]?.[0] || "A"}
+        <span className="font-heading font-black leading-none tracking-tighter" style={{ fontSize: "40vw" }}>
+          A1
         </span>
       </div>
 

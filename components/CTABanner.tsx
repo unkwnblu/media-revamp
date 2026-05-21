@@ -23,6 +23,11 @@ export default function CTABanner({
       <div className="ambient-orb w-[400px] h-[400px] bg-purple-500 top-[-20%] right-[10%] !opacity-[0.08]" style={{ animationDelay: "1s" }} />
       <div className="ambient-orb w-[300px] h-[300px] bg-pink-500 bottom-[-10%] left-[5%] !opacity-[0.06]" style={{ animationDelay: "3s" }} />
 
+      {/* A1 watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="font-heading font-black text-white leading-none tracking-tighter opacity-[0.25]" style={{ fontSize: "40vw" }}>A1</span>
+      </div>
+
       <div
         ref={ref}
         className={`max-w-[1400px] mx-auto text-center relative z-10 fade-in-up ${

@@ -84,10 +84,12 @@ export default async function EventPage({ params }: Props) {
           </>
         )}
 
+        {/* A1 watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="font-heading font-black leading-none tracking-tighter opacity-[0.04]" style={{ fontSize: "40vw" }}>A1</span>
+        </div>
+
         <div className="relative z-10 text-center px-6 md:px-10 max-w-4xl mx-auto">
-          <span className="text-[10px] tracking-[0.5em] opacity-50 block mb-6">
-            A1 Media Presents
-          </span>
           <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-tight">
             {event.title}
           </h1>

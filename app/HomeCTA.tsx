@@ -16,6 +16,11 @@ export default function HomeCTA() {
       <div className="ambient-orb w-[400px] h-[400px] bg-pink-500 bottom-[5%] left-[-5%] !opacity-12" style={{ animationDelay: "4s" }} />
       <div className="ambient-orb w-[300px] h-[300px] bg-blue-400 top-[40%] left-[30%] !opacity-[0.08]" style={{ animationDelay: "6s" }} />
 
+      {/* A1 watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="font-heading font-black text-white leading-none tracking-tighter opacity-[0.07]" style={{ fontSize: "40vw" }}>A1</span>
+      </div>
+
       {/* Background decorative circles */}
       <div className="absolute inset-0 pointer-events-none">
         <div

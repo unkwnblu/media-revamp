@@ -70,9 +70,9 @@ export default function AboutTeaser() {
                   : "opacity-0 translate-y-8"
               }`}
             >
-              <p className="text-sm leading-relaxed opacity-70 font-body font-medium normal-case mb-8">
+              <p className="text-lg leading-relaxed opacity-70 font-body font-medium normal-case mb-8">
                 We respond to a calling to connect and form something bigger than
-                ourselves — dreamers of all kinds, fueled by relentless positivity
+                ourselves. We are dreamers of all kinds, fueled by relentless positivity
                 and the spirit of discovery.
               </p>
               <Link
