@@ -16,6 +16,7 @@ export default async function HomePage() {
     { data: testimonials },
     { data: events },
     { data: projects },
+    { data: upcomingSessionsRaw },
   ] = await Promise.all([
     supabase
       .from("testimonials")
@@ -31,7 +32,27 @@ export default async function HomePage() {
       .select("id, title, category, year, image")
       .order("created_at", { ascending: false })
       .limit(3),
+    supabase
+      .from("event_sessions")
+      .select("name, date, thumbnail, events(title, slug)")
+      .eq("is_upcoming", true)
+      .limit(5),
   ]);
+
+  type RawSession = {
+    name: string;
+    date: string | null;
+    thumbnail: string | null;
+    events: { title: string; slug: string } | null;
+  };
+
+  const upcomingSessions = (upcomingSessionsRaw ?? []).map((s: RawSession) => ({
+    name: s.name,
+    date: s.date,
+    thumbnail: s.thumbnail,
+    event_slug: s.events?.slug ?? "",
+    event_title: s.events?.title ?? "",
+  }));
 
   return (
     <>
@@ -39,7 +60,7 @@ export default async function HomePage() {
       <MarqueeTicker />
       <AboutTeaser />
       <FeaturedWork projects={projects ?? []} />
-      <ContentShowcase />
+      <ContentShowcase upcomingSessions={upcomingSessions} />
       <StatsBar />
       <TestimonialSpotlight testimonials={testimonials ?? []} />
       <EventsPreview events={events ?? []} />

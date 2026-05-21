@@ -63,45 +63,41 @@ function Lightbox({
 }
 
 // ── Bento layouts ─────────────────────────────────────────────────────────────
-// Each layout describes grid spans for a group of images.
-// We tile these groups across all images.
+// Every pattern must perfectly tile a 3-column grid with no empty cells.
+// Verified: sum of (col × row) for each pattern equals 3 × total-rows.
 
 type Span = { col: number; row: number };
 
-const bentoPatterns: Span[][] = [
-  // Pattern A: 1 big + 2 small (3 images)
-  [
-    { col: 2, row: 2 },
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-  ],
-  // Pattern B: 1 tall + 2 wide stacked (3 images)
-  [
-    { col: 1, row: 2 },
-    { col: 2, row: 1 },
-    { col: 2, row: 1 },
-  ],
-  // Pattern C: 4 equal (4 images)
-  [
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-  ],
-  // Pattern D: 1 wide + 3 small (4 images)
-  [
-    { col: 3, row: 1 },
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-    { col: 1, row: 1 },
-  ],
+// 3-image patterns — all fill a 3-col × 2-row block (6 slots)
+const patterns3: Span[][] = [
+  // Big left + 2 small right
+  [{ col: 2, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }],
+  // Tall left + 2 wide stacked right
+  [{ col: 1, row: 2 }, { col: 2, row: 1 }, { col: 2, row: 1 }],
 ];
+
+// 4-image patterns — all fill a 3-col × 2-row block (6 slots) with no gaps
+const patterns4: Span[][] = [
+  // Full-width top + 3 equal bottom
+  [{ col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }],
+  // 3 equal top + full-width bottom
+  [{ col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 3, row: 1 }],
+  // Small left + wide right / wide left + small right
+  [{ col: 1, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }, { col: 1, row: 1 }],
+  // Wide left + small right / small left + wide right
+  [{ col: 2, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }],
+];
+
+function rand<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function pickPattern(remaining: number): Span[] {
   if (remaining === 1) return [{ col: 3, row: 2 }];
   if (remaining === 2) return [{ col: 2, row: 2 }, { col: 1, row: 2 }];
-  if (remaining >= 4) return bentoPatterns[Math.floor(Math.random() * bentoPatterns.length)];
-  return bentoPatterns[0]; // 3 images → pattern A
+  if (remaining === 3) return rand(patterns3);
+  // 4 or more: pick from either pool — next group handles leftovers
+  return rand([...patterns4, ...patterns3]);
 }
 
 // ── Gallery ───────────────────────────────────────────────────────────────────

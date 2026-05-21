@@ -7,7 +7,7 @@ import {
   RiArrowLeftLine, RiSaveLine, RiLoader4Line, RiUploadCloud2Line,
   RiCloseLine, RiImageLine, RiAddLine, RiDeleteBinLine, RiCalendarLine,
   RiRepeatLine, RiGalleryLine, RiLinkM, RiInstagramLine, RiTwitterXLine,
-  RiTiktokLine, RiFacebookBoxLine,
+  RiTiktokLine, RiFacebookBoxLine, RiGlobalLine,
 } from "react-icons/ri";
 import { createEvent, updateEvent } from "../actions";
 
@@ -30,6 +30,7 @@ interface DBEvent {
   twitter: string | null;
   tiktok: string | null;
   facebook: string | null;
+  website: string | null;
 }
 
 interface DBSession {
@@ -225,6 +226,7 @@ export default function EventForm({ isEdit = false, event, sessions: initialSess
     initialSessions.map((s, i) => dbSessionToLocal(s, i))
   );
   const [expandedSession, setExpandedSession] = useState<number | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ index: number; name: string } | null>(null);
 
   // ── Cover image ──
   const handleCoverFile = (f: File) => {
@@ -241,8 +243,21 @@ export default function EventForm({ isEdit = false, event, sessions: initialSess
   };
 
   const removeSession = (i: number) => {
-    setSessions(sessions.filter((_, idx) => idx !== i));
-    setExpandedSession(null);
+    const sessionName = sessions[i]?.name?.trim() || `Session ${i + 1}`;
+    setDeleteConfirm({ index: i, name: sessionName });
+  };
+
+  const confirmDeleteSession = () => {
+    if (deleteConfirm === null) return;
+    const i = deleteConfirm.index;
+    setSessions((prev) => prev.filter((_, idx) => idx !== i));
+    setExpandedSession((prev) => {
+      if (prev === null) return null;
+      if (prev === i) return null;
+      if (prev > i) return prev - 1;
+      return prev;
+    });
+    setDeleteConfirm(null);
   };
 
   const updateSession = <K extends keyof SessionLocal>(i: number, field: K, value: SessionLocal[K]) => {
@@ -620,10 +635,11 @@ export default function EventForm({ isEdit = false, event, sessions: initialSess
             </div>
             <div className="grid grid-cols-1 gap-3">
               {[
-                { name: "instagram", icon: RiInstagramLine, placeholder: "https://instagram.com/...", label: "Instagram", color: "text-pink-400" },
-                { name: "twitter",   icon: RiTwitterXLine,  placeholder: "https://x.com/...",         label: "X / Twitter", color: "text-white/60" },
-                { name: "tiktok",    icon: RiTiktokLine,    placeholder: "https://tiktok.com/@...",   label: "TikTok",     color: "text-white/60" },
-                { name: "facebook",  icon: RiFacebookBoxLine, placeholder: "https://facebook.com/...", label: "Facebook",  color: "text-blue-400" },
+                { name: "website",   icon: RiGlobalLine,     placeholder: "https://youreventpage.com", label: "Website / Landing Page", color: "text-purple-400" },
+                { name: "instagram", icon: RiInstagramLine,  placeholder: "https://instagram.com/...", label: "Instagram",              color: "text-pink-400" },
+                { name: "twitter",   icon: RiTwitterXLine,   placeholder: "https://x.com/...",         label: "X / Twitter",            color: "text-white/60" },
+                { name: "tiktok",    icon: RiTiktokLine,     placeholder: "https://tiktok.com/@...",   label: "TikTok",                 color: "text-white/60" },
+                { name: "facebook",  icon: RiFacebookBoxLine, placeholder: "https://facebook.com/...", label: "Facebook",               color: "text-blue-400" },
               ].map(({ name, icon: Icon, placeholder, label, color }) => (
                 <div key={name} className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2.5 focus-within:border-purple-400/50 transition-all">
                   <Icon size={16} className={`shrink-0 ${color}`} />
@@ -661,6 +677,45 @@ export default function EventForm({ isEdit = false, event, sessions: initialSess
           </button>
         </div>
       </form>
+
+      {/* ── Delete session confirmation modal ── */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setDeleteConfirm(null)}
+          />
+          {/* Panel */}
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-white/[0.08] bg-[#0f0f14] shadow-2xl p-6">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20">
+              <RiDeleteBinLine size={20} className="text-red-400" />
+            </div>
+            <h3 className="text-center text-base font-semibold text-white mb-1">Delete Session</h3>
+            <p className="text-center text-sm text-white/50 mb-6">
+              Are you sure you want to delete{" "}
+              <span className="text-white font-medium">&ldquo;{deleteConfirm.name}&rdquo;</span>?
+              <br />This will remove the session and all its photos.
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(null)}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-sm text-white/70 hover:text-white transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteSession}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/90 hover:bg-red-500 text-sm font-semibold text-white transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -102,6 +102,7 @@ export async function createEvent(formData: FormData) {
       twitter:      (formData.get("twitter") as string) || null,
       tiktok:       (formData.get("tiktok") as string) || null,
       facebook:     (formData.get("facebook") as string) || null,
+      website:      (formData.get("website") as string) || null,
     })
     .select("id")
     .single();
@@ -163,6 +164,7 @@ export async function updateEvent(id: string, formData: FormData) {
       twitter:      (formData.get("twitter") as string) || null,
       tiktok:       (formData.get("tiktok") as string) || null,
       facebook:     (formData.get("facebook") as string) || null,
+      website:      (formData.get("website") as string) || null,
       updated_at:   new Date().toISOString(),
     })
     .eq("id", id);

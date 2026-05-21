@@ -6,7 +6,7 @@ import { useInView } from "@/lib/useInView";
 import {
   RiMapPinLine, RiTimeLine, RiCalendarLine, RiTicketLine,
   RiArrowRightLine, RiImageLine, RiInstagramLine, RiTwitterXLine,
-  RiTiktokLine, RiFacebookBoxLine,
+  RiTiktokLine, RiFacebookBoxLine, RiGlobalLine,
 } from "react-icons/ri";
 
 interface Session {
@@ -34,6 +34,7 @@ interface Event {
   twitter: string | null;
   tiktok: string | null;
   facebook: string | null;
+  website: string | null;
 }
 
 function InfoPill({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
@@ -47,33 +48,52 @@ function InfoPill({ icon: Icon, label }: { icon: React.ElementType; label: strin
 
 // ── Social links row ─────────────────────────────────────────────────────────
 const socialConfig = [
-  { key: "instagram", icon: RiInstagramLine, label: "Instagram", color: "hover:text-pink-400 hover:border-pink-400/40" },
-  { key: "twitter",   icon: RiTwitterXLine,  label: "X",         color: "hover:text-white hover:border-white/40" },
-  { key: "tiktok",    icon: RiTiktokLine,    label: "TikTok",    color: "hover:text-white hover:border-white/40" },
-  { key: "facebook",  icon: RiFacebookBoxLine, label: "Facebook", color: "hover:text-blue-400 hover:border-blue-400/40" },
+  { key: "instagram", icon: RiInstagramLine,   label: "Instagram", color: "hover:text-pink-400 hover:border-pink-400/40" },
+  { key: "twitter",   icon: RiTwitterXLine,    label: "X",         color: "hover:text-white hover:border-white/40" },
+  { key: "tiktok",    icon: RiTiktokLine,      label: "TikTok",    color: "hover:text-white hover:border-white/40" },
+  { key: "facebook",  icon: RiFacebookBoxLine, label: "Facebook",  color: "hover:text-blue-400 hover:border-blue-400/40" },
 ];
 
 function SocialLinks({ event }: { event: Event }) {
-  const links = socialConfig.filter(({ key }) => !!event[key as keyof Event]);
-  if (links.length === 0) return null;
+  const socials = socialConfig.filter(({ key }) => !!event[key as keyof Event]);
+  const hasAnything = socials.length > 0 || !!event.website;
+  if (!hasAnything) return null;
 
   return (
-    <div className="mt-8 pt-6 border-t border-white/[0.06]">
-      <p className="text-[10px] tracking-[0.3em] text-white/30 mb-4">FOLLOW THE EVENT</p>
-      <div className="flex items-center gap-3 flex-wrap">
-        {links.map(({ key, icon: Icon, label, color }) => (
-          <a
-            key={key}
-            href={event[key as keyof Event] as string}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/[0.12] text-white/50 text-xs tracking-wide transition-all duration-200 ${color}`}
-          >
-            <Icon size={14} />
-            {label}
-          </a>
-        ))}
-      </div>
+    <div className="mt-8 pt-6 border-t border-white/[0.06] space-y-4">
+      {/* Website CTA — shown prominently if set */}
+      {event.website && (
+        <a
+          href={event.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-white/80 text-sm font-medium hover:from-purple-500/30 hover:to-pink-500/30 hover:text-white transition-all duration-200"
+        >
+          <RiGlobalLine size={15} className="text-purple-400" />
+          Visit Event Page
+        </a>
+      )}
+
+      {/* Social icon pills */}
+      {socials.length > 0 && (
+        <div>
+          <p className="text-[10px] tracking-[0.3em] text-white/30 mb-3">FOLLOW THE EVENT</p>
+          <div className="flex items-center gap-3 flex-wrap">
+            {socials.map(({ key, icon: Icon, label, color }) => (
+              <a
+                key={key}
+                href={event[key as keyof Event] as string}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/[0.12] text-white/50 text-xs tracking-wide transition-all duration-200 ${color}`}
+              >
+                <Icon size={14} />
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
