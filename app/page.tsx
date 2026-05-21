@@ -43,16 +43,19 @@ export default async function HomePage() {
     name: string;
     date: string | null;
     thumbnail: string | null;
-    events: { title: string; slug: string } | null;
+    events: { title: string; slug: string }[] | { title: string; slug: string } | null;
   };
 
-  const upcomingSessions = (upcomingSessionsRaw ?? []).map((s: RawSession) => ({
-    name: s.name,
-    date: s.date,
-    thumbnail: s.thumbnail,
-    event_slug: s.events?.slug ?? "",
-    event_title: s.events?.title ?? "",
-  }));
+  const upcomingSessions = (upcomingSessionsRaw ?? []).map((s: RawSession) => {
+    const ev = Array.isArray(s.events) ? s.events[0] : s.events;
+    return {
+      name: s.name,
+      date: s.date,
+      thumbnail: s.thumbnail,
+      event_slug: ev?.slug ?? "",
+      event_title: ev?.title ?? "",
+    };
+  });
 
   return (
     <>
