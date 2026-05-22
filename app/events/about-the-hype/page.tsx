@@ -26,9 +26,6 @@ export default function AboutTheHypePage() {
           <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-tight">
             About The Hype
           </h1>
-          <p className="mt-6 text-sm md:text-base opacity-60 tracking-widest">
-            Gives Hype A Meaning
-          </p>
         </div>
       </section>
 

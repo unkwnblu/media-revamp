@@ -7,7 +7,7 @@ const CATEGORY_META: Record<string, { label: string; description: string }> = {
   "backstage":         { label: "Backstage",         description: "Behind-the-scenes footage and exclusive backstage content." },
   "studio":            { label: "Studio",             description: "Watch some of the studio media interviews we facilitated for our clients across different platforms. From strategy to execution, we connected brands and talents with the right conversations, audiences, and media spaces.\n\nMore than just appearances, these moments helped amplify stories, strengthen visibility, and create meaningful cultural conversations both on and off the screen." },
   "campaigns":         { label: "Campaigns",          description: "Brand campaigns and creative activations." },
-  "music-videos":      { label: "Music Videos",       description: "Official music videos from our artists." },
+  "music-videos":      { label: "Music Videos",       description: "Some music videos from various clients we promoted and handled the media campaign for." },
   "brand-activations": { label: "Brand Activations",  description: "Live brand experiences and event activations." },
 };
 
