@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { createMetadata } from "@/lib/metadata";
 import HeroSection from "@/components/HeroSection";
 import CTABanner from "@/components/CTABanner";
-import ImageGallery from "@/components/ImageGallery";
 import WhoWeAreContent from "./WhoWeAreContent";
 
 export const metadata: Metadata = createMetadata({
@@ -11,11 +10,6 @@ export const metadata: Metadata = createMetadata({
     "A1 Media is built on the premise of diversity and inclusion. Fueled by self-expression and the spirit of discovery, we create safe and magical spaces for brands and audiences to connect.",
 });
 
-const galleryImages = Array.from({ length: 8 }, (_, i) => ({
-  src: `/images/gallery/gallery-${i + 1}.jpg`,
-  alt: `A1 Media Team ${i + 1}`,
-}));
-
 export default function WhoWeArePage() {
   return (
     <>
@@ -23,7 +17,6 @@ export default function WhoWeArePage() {
 
       <WhoWeAreContent />
 
-      <ImageGallery images={galleryImages} />
 
       {/* Vision & Values */}
       <section className="py-24 md:py-32 px-6 md:px-10 relative overflow-hidden border-t border-white/[0.06]">

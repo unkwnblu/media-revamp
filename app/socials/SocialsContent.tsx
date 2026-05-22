@@ -40,9 +40,6 @@ export default function SocialsContent() {
                 <span className="font-heading font-black text-lg tracking-widest">
                   {link.platform}
                 </span>
-                <span className="text-[10px] tracking-widest opacity-40 group-hover:opacity-60 transition-opacity normal-case">
-                  {link.url.replace("https://", "").replace("www.", "")}
-                </span>
               </Link>
             ))}
           </div>

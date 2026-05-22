@@ -16,12 +16,13 @@ export default async function EventsPage() {
 
   const { data: events } = await supabase
     .from("events")
-    .select("id, title, tagline, slug, image, is_recurring")
+    .select("id, title, tagline, slug, image, is_recurring, sort_order")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   return (
     <>
-      <HeroSection heading="Our Events" fullHeight={false} />
+      <HeroSection heading="Our Events" subheading="Events we currently curate and manage" fullHeight={false} />
       <EventsOverview events={events ?? []} />
       <CTABanner
         heading="Let's Handle Your Next Project"

@@ -6,7 +6,8 @@ export default async function AdminEventsPage() {
 
   const { data: events, error } = await supabase
     .from("events")
-    .select("id, title, tagline, slug, is_recurring")
+    .select("id, title, tagline, slug, is_recurring, sort_order")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {

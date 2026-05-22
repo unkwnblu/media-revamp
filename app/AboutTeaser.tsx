@@ -5,12 +5,10 @@ import Image from "next/image";
 import { useInView } from "@/lib/useInView";
 
 const mosaicImages = [
-  "/images/IMG_1088.jpg",
-  "/images/IMG_1027.jpg",
-  "/images/IMG_0968.jpg",
-  "/images/IMG_1153.jpg",
-  "/images/IMG_1036.jpg",
-  "/images/IMG_0961.jpg",
+  "/images/about-1.jpeg",
+  "/images/about-2.jpeg",
+  "/images/about-3.jpeg",
+  "/images/about-4.jpeg",
 ];
 
 export default function AboutTeaser() {
@@ -113,27 +111,20 @@ export default function AboutTeaser() {
             ))}
           </div>
 
-          {/* Desktop: 6-col asymmetric grid */}
-          <div className="hidden md:grid grid-cols-6 gap-3">
-            {[
-              { src: mosaicImages[0], aspect: "aspect-[3/4]" },
-              { src: mosaicImages[1], aspect: "aspect-square" },
-              { src: mosaicImages[2], aspect: "aspect-[3/4]" },
-              { src: mosaicImages[3], aspect: "aspect-square" },
-              { src: mosaicImages[4], aspect: "aspect-[3/4]" },
-              { src: mosaicImages[5], aspect: "aspect-square" },
-            ].map((item, i) => (
+          {/* Desktop: 4-col even grid */}
+          <div className="hidden md:grid grid-cols-4 gap-3">
+            {mosaicImages.map((src, i) => (
               <div
                 key={i}
-                className={`${item.aspect} rounded-lg overflow-hidden relative group`}
+                className="aspect-[3/4] rounded-lg overflow-hidden relative group"
                 style={{ transitionDelay: `${600 + i * 100}ms` }}
               >
                 <Image
-                  src={item.src}
+                  src={src}
                   alt=""
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  sizes="17vw"
+                  sizes="25vw"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500" />
               </div>

@@ -5,7 +5,7 @@ import { createMetadata } from "@/lib/metadata";
 
 const CATEGORY_META: Record<string, { label: string; description: string }> = {
   "backstage":         { label: "Backstage",         description: "Behind-the-scenes footage and exclusive backstage content." },
-  "studio":            { label: "Studio",             description: "Studio sessions and recording content." },
+  "studio":            { label: "Studio",             description: "Watch some of the studio media interviews we facilitated for our clients across different platforms. From strategy to execution, we connected brands and talents with the right conversations, audiences, and media spaces.\n\nMore than just appearances, these moments helped amplify stories, strengthen visibility, and create meaningful cultural conversations both on and off the screen." },
   "campaigns":         { label: "Campaigns",          description: "Brand campaigns and creative activations." },
   "music-videos":      { label: "Music Videos",       description: "Official music videos from our artists." },
   "brand-activations": { label: "Brand Activations",  description: "Live brand experiences and event activations." },
@@ -48,7 +48,11 @@ export default async function GalleryCategoryPage({ params }: Props) {
         <div className="mb-12">
           <p className="text-[10px] tracking-[0.4em] text-purple-400/60 mb-3">Gallery</p>
           <h1 className="font-heading font-black text-4xl md:text-6xl">{meta.label}</h1>
-          <p className="text-white/50 mt-3 text-sm">{meta.description}</p>
+          <div className="text-white/50 mt-3 text-sm space-y-3 max-w-2xl normal-case">
+            {meta.description.split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
         </div>
 
         {/* Grid */}

@@ -218,6 +218,19 @@ export async function updateEvent(id: string, formData: FormData) {
   redirect("/admin/events");
 }
 
+// ─── Reorder ──────────────────────────────────────────────────────────────────
+
+export async function reorderEvents(orderedIds: string[]) {
+  const supabase = await createClient();
+  await Promise.all(
+    orderedIds.map((id, index) =>
+      supabase.from("events").update({ sort_order: index }).eq("id", id)
+    )
+  );
+  revalidatePath("/admin/events");
+  revalidatePath("/events");
+}
+
 // ─── Delete ───────────────────────────────────────────────────────────────────
 
 export async function deleteEvent(id: string) {

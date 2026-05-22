@@ -18,11 +18,10 @@ interface Props {
 }
 
 const otherItems = [
-  { image: "/images/IMG_0963.jpg", span: "col-span-1 row-span-1", label: "Backstage",         href: "/gallery/backstage" },
-  { image: "/images/IMG_1077.jpg", span: "col-span-1 row-span-1", label: "Studio",            href: "/gallery/studio" },
-  { image: "/images/IMG_1172.jpg", span: "col-span-1 row-span-2", label: "Campaigns",         href: "/gallery/campaigns" },
-  { image: "/images/IMG_1011.jpg", span: "col-span-1 row-span-1", label: "Music Videos",      href: "/gallery/music-videos" },
-  { image: "/images/IMG_0970.jpg", span: "col-span-2 row-span-1", label: "Brand Activations", href: "/gallery/brand-activations" },
+  { image: "/images/IMG_0963.jpg", span: "col-span-1 row-span-1", label: "Backstage",    href: "/gallery/backstage",    color: "bg-purple-600/60" },
+  { image: "/images/studio.jpeg",  span: "col-span-1 row-span-1", label: "Studio",       href: "/gallery/studio",       color: "bg-rose-600/60" },
+  { image: "/images/IMG_1172.jpg", span: "col-span-1 row-span-1", label: "Campaigns",    href: "/gallery/campaigns",    color: "bg-amber-600/60" },
+  { image: "/images/IMG_1011.jpg", span: "col-span-1 row-span-1", label: "Music Videos", href: "/gallery/music-videos", color: "bg-teal-600/60" },
 ];
 
 export default function ContentShowcase({ upcomingSessions }: Props) {
@@ -131,9 +130,8 @@ export default function ContentShowcase({ upcomingSessions }: Props) {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
-              {/* Dark overlay */}
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              {/* Colour tint overlay */}
+              <div className={`absolute inset-0 ${item.color} transition-opacity duration-500 group-hover:opacity-80`} />
               {/* Hover play icon */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -143,8 +141,8 @@ export default function ContentShowcase({ upcomingSessions }: Props) {
                 </div>
               </div>
               {/* Label */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                <span className="text-[10px] md:text-xs tracking-widest font-heading font-bold opacity-90 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-base md:text-lg tracking-widest font-heading font-black text-center drop-shadow-lg">
                   {item.label}
                 </span>
               </div>
