@@ -15,12 +15,16 @@ export async function generateMetadata({
   const supabase = await createClient();
   const { data: project } = await supabase
     .from("projects")
-    .select("title, description")
+    .select("title, description, thumbnail")
     .eq("id", id)
     .single();
 
   if (!project) return createMetadata({ title: "Project Not Found" });
-  return createMetadata({ title: project.title, description: project.description });
+  return createMetadata({
+    title: project.title,
+    description: project.description,
+    image: project.thumbnail ?? undefined,
+  });
 }
 
 export default async function ProjectDetailPage({

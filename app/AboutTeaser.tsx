@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useInView } from "@/lib/useInView";
 
 const mosaicImages = [
-  "/images/about-1.jpeg",
-  "/images/about-2.jpeg",
-  "/images/about-3.jpeg",
-  "/images/about-4.jpeg",
+  { src: "/images/about-1.jpeg", alt: "A1 Media team at a live event" },
+  { src: "/images/about-2.jpeg", alt: "Behind the scenes at an A1 Media production" },
+  { src: "/images/about-3.jpeg", alt: "A1 Media event crowd atmosphere" },
+  { src: "/images/about-4.jpeg", alt: "A1 Media creative session in progress" },
 ];
 
 export default function AboutTeaser() {
@@ -94,14 +94,14 @@ export default function AboutTeaser() {
         >
           {/* Mobile: 2-col simple grid */}
           <div className="grid grid-cols-2 gap-3 md:hidden">
-            {mosaicImages.slice(0, 4).map((src, i) => (
+            {mosaicImages.slice(0, 4).map((img, i) => (
               <div
                 key={i}
                 className="aspect-[4/3] rounded-xl overflow-hidden relative group"
               >
                 <Image
-                  src={src}
-                  alt=""
+                  src={img.src}
+                  alt={img.alt}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="50vw"
@@ -113,15 +113,15 @@ export default function AboutTeaser() {
 
           {/* Desktop: 4-col even grid */}
           <div className="hidden md:grid grid-cols-4 gap-3">
-            {mosaicImages.map((src, i) => (
+            {mosaicImages.map((img, i) => (
               <div
                 key={i}
                 className="aspect-[3/4] rounded-lg overflow-hidden relative group"
                 style={{ transitionDelay: `${600 + i * 100}ms` }}
               >
                 <Image
-                  src={src}
-                  alt=""
+                  src={img.src}
+                  alt={img.alt}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="25vw"

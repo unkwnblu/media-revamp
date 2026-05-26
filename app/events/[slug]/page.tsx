@@ -16,12 +16,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("events")
-    .select("title, description")
+    .select("title, description, image")
     .eq("slug", slug)
     .single();
 
   if (!data) return {};
-  return createMetadata({ title: data.title, description: data.description });
+  return createMetadata({
+    title: data.title,
+    description: data.description,
+    image: data.image ?? undefined,
+  });
 }
 
 export default async function EventPage({ params }: Props) {

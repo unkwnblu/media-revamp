@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const meta = CATEGORY_META[category];
   if (!meta) return {};
-  return createMetadata({ title: meta.label });
+  return createMetadata({ title: meta.label, description: meta.description.split("\n\n")[0] });
 }
 
 export default async function GalleryCategoryPage({ params }: Props) {
